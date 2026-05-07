@@ -1,4 +1,4 @@
-<html lang="zh-TW"><head>
+<html lang="zh-TW" style="color-scheme: light; --liff-base-background-color: #FFFFFF; --liff-base-text-color: #000000; --liff-base-background-rgb-color: 255, 255, 255; --liff-base-text-rgb-color: 0, 0, 0; --liff-light-button-border-color: rgba(0, 0, 0, 0.15); --liff-title-text-color: #111111; --liff-title-background-color: #FFFFFF; --liff-title-button-color: #111111; --liff-icon-color: #111111; --liff-status-bar-color: black; --liff-title-subtext-color: #B7B7B7; --liff-progress-bar-color: #06C755; --liff-progress-background-color: #FFFFFF; --liff-title-button-area-background-color: rgba(255, 255, 255, 0.12); --liff-title-button-area-border-color: rgba(0, 0, 0, 0.15);"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>香品小食堂 點餐系統</title>
@@ -40,8 +40,9 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .closed-range-row-title{font-size:.75rem;font-weight:700;color:#888;display:flex;justify-content:space-between;align-items:center}
 .closed-range-fields{display:flex;flex-direction:column;gap:.375rem}
 .closed-range-label{font-size:.75rem;color:#555;margin-bottom:2px}
-.closed-range-time-row{display:flex;gap:.375rem;align-items:center}
-.closed-range-time-row span{font-size:.8125rem;color:#888;white-space:nowrap;flex-shrink:0}
+/* 日期＋時間並排 */
+.cr-dt-row{display:flex;gap:.375rem;align-items:center}
+.cr-dt-row input[type=date],.cr-dt-row input[type=time]{flex:1;min-width:0;border:1.5px solid #ddd;border-radius:.5rem;padding:.4rem .5rem;font-size:.9rem;font-family:'Noto Sans TC',sans-serif;color:#333;background:white}
 
 /* 分類標題 */
 .section-title{padding:.875rem .875rem .375rem;font-size:.9375rem;font-weight:700;color:#1a2455}
@@ -73,6 +74,8 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .closed-icon{font-size:4rem;margin-bottom:1rem}
 .closed-title{font-size:1.5rem;font-weight:700;color:white;margin-bottom:.625rem}
 .closed-msg{font-size:1rem;color:rgba(255,255,255,.8);line-height:1.9}
+.closed-adm-btn{position:absolute;bottom:max(1.25rem,env(safe-area-inset-bottom));right:1rem;background:none;border:none;color:rgba(255,255,255,0.18);font-size:1.25rem;cursor:pointer;padding:.5rem;line-height:1;-webkit-tap-highlight-color:transparent}
+.closed-adm-btn:active{color:rgba(255,255,255,0.5)}
 
 /* 底部欄 */
 .bottom-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:white;border-top:1px solid #e0e0e0;padding:.5rem .875rem max(.875rem,env(safe-area-inset-bottom));z-index:50;display:none;align-items:center;justify-content:space-between;gap:.5rem}
@@ -108,11 +111,11 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .cart-back-btn{font-size:.875rem;color:#1a2455;background:none;border:1.5px solid #1a2455;border-radius:.5rem;cursor:pointer;padding:.375rem .625rem;font-family:'Noto Sans TC',sans-serif;min-height:2.25rem;display:flex;align-items:center;gap:.25rem;white-space:nowrap}
 .cart-back-btn:active{background:#f0ede6}
 .clear-btn{font-size:.875rem;color:#c4390a;background:none;border:none;cursor:pointer;padding:.375rem .5rem;font-family:'Noto Sans TC',sans-serif;min-height:2.25rem}
-.cart-body{overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch;position:relative}
-.cart-scroll-fade{position:absolute;bottom:0;left:0;right:0;height:4rem;background:linear-gradient(to bottom,rgba(255,255,255,0),rgba(255,255,255,0.97));pointer-events:none;display:flex;align-items:flex-end;justify-content:center;padding-bottom:.5rem;transition:opacity .25s;z-index:10}
-.cart-scroll-arrow{width:2rem;height:2rem;border-radius:50%;background:#1a2455;display:flex;align-items:center;justify-content:center;animation:bounceDown .9s infinite alternate;box-shadow:0 2px 8px rgba(26,36,85,.25)}
-.cart-scroll-arrow svg{width:1rem;height:1rem;fill:white}
-@keyframes bounceDown{0%{transform:translateY(0)}100%{transform:translateY(5px)}}
+/* 右側橘色捲軸，與分類頁籤同色 */
+.cart-body{overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#e8a020 rgba(0,0,0,0.06)}
+.cart-body::-webkit-scrollbar{width:3px}
+.cart-body::-webkit-scrollbar-track{background:rgba(0,0,0,0.06);border-radius:2px}
+.cart-body::-webkit-scrollbar-thumb{background:#e8a020;border-radius:2px}
 .cart-items{padding:.625rem 1rem}
 .cart-item{display:flex;align-items:center;gap:.625rem;padding:.625rem 0;border-bottom:1px solid #f0f0f0}
 .cart-item-name{flex:1;font-size:.9375rem;font-weight:500;color:#1a2455;min-width:0}
@@ -332,37 +335,13 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 
 /* 折扣列（外帶9折才顯示，由 JS 控制 display） */
 .sum-disc-row {
-  display: none;                  /* 預設隱藏，JS 控制為 flex */
+  display: none;
   justify-content: space-between;
   font-size: 13px;
   color: #c4390a;
   margin-bottom: 4px;
 }
 .sum-disc-row.show { display: flex; }
-
-/* 管理後台浮動按鈕（右下角齒輪，常駐顯示，z-index 高於公休遮罩） */
-.adm-fab {
-  position: fixed;
-  bottom: max(1.25rem, calc(env(safe-area-inset-bottom) + 0.5rem));
-  right: 1rem;
-  width: 2.75rem;
-  height: 2.75rem;
-  border-radius: 50%;
-  background: #1a2455;
-  border: none;
-  color: white;
-  font-size: 1.125rem;
-  cursor: pointer;
-  z-index: 160;
-  box-shadow: 0 2px 10px rgba(0,0,0,.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0.55;
-  transition: opacity 0.2s;
-}
-.adm-fab:hover,
-.adm-fab:active { opacity: 1; }
 
 </style>
 </head>
@@ -391,12 +370,832 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
       </button>
     </div>
     <div class="cat-tabs-wrap">
-      <div class="cat-tabs" id="cat-tabs"><!-- 由 JS renderTabs() 動態產生 --></div>
+      <div class="cat-tabs" id="cat-tabs"><button class="cat-tab active" onclick="selCategory('全部')">全部</button><button class="cat-tab" onclick="selCategory('✨新品上市')">✨新品上市</button><button class="cat-tab" onclick="selCategory('🍳熱炒類')">🍳熱炒類</button><button class="cat-tab" onclick="selCategory('🥬時蔬類')">🥬時蔬類</button><button class="cat-tab" onclick="selCategory('🟡酥炸類')">🟡酥炸類</button><button class="cat-tab" onclick="selCategory('🍚炒飯')">🍚炒飯</button><button class="cat-tab" onclick="selCategory('🍝炒麵')">🍝炒麵</button><button class="cat-tab" onclick="selCategory('🍝炒烏龍麵')">🍝炒烏龍麵</button><button class="cat-tab" onclick="selCategory('🍝烏龍湯麵')">🍝烏龍湯麵</button><button class="cat-tab" onclick="selCategory('🥣粥品')">🥣粥品</button><button class="cat-tab" onclick="selCategory('🥣湯品')">🥣湯品</button></div>
     </div>
   </div>
 
   <div class="announce" id="announce-bar">📢【LINE限定】自取享９折 ‼️ 如需外送服務請提前告知 🙏</div>
-  <div id="menu-content"><!-- 由 JS renderMenu() 動態產生 --></div>
+  <div id="menu-content"><div class="menu-list"><div class="section-title">✨新品上市</div><div class="menu-item">
+    <div class="item-emoji">🟡</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">椒鹽秋刀魚</span>
+        
+        <span class="new-tag">新品</span>
+        
+      </div>
+      <div class="item-price">$180</div>
+    </div><button class="add-btn" onclick="changeQty(101,1)">+</button></div><div class="section-title">🍳熱炒類</div><div class="menu-item">
+    <div class="item-emoji">🍚</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">白飯</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$20</div>
+    </div><button class="add-btn" onclick="changeQty(100,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍳</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">塔香烘蛋</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$135</div>
+    </div><button class="add-btn" onclick="changeQty(35,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍳</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">青蔥烘蛋</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$135</div>
+    </div><button class="add-btn" onclick="changeQty(36,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍳</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">菜脯蛋</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$135</div>
+    </div><button class="add-btn" onclick="changeQty(37,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍳</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">蚵仔煎蛋</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$160</div>
+    </div><button class="add-btn" onclick="changeQty(38,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍳</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">番茄炒蛋</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$180</div>
+    </div><button class="add-btn" onclick="changeQty(39,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍳</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">麻婆豆腐🌶️</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$180</div>
+    </div><button class="add-btn" onclick="changeQty(40,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍳</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">豆豉鮮蚵</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$180</div>
+    </div><button class="add-btn" onclick="changeQty(41,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍳</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">豆豉排骨</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$195</div>
+    </div><button class="add-btn" onclick="changeQty(42,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍳</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">蠔油雞丁</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$180</div>
+    </div><button class="add-btn" onclick="changeQty(43,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍳</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">宮保雞丁🌶️</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$180</div>
+    </div><button class="add-btn" onclick="changeQty(44,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍳</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">宮保中卷🌶️</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$180</div>
+    </div><button class="add-btn" onclick="changeQty(45,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍳</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">熱炒豬肉</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$180</div>
+    </div><button class="add-btn" onclick="changeQty(46,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍳</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">熱炒牛肉</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$190</div>
+    </div><button class="add-btn" onclick="changeQty(47,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍳</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">熱炒羊肉</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$190</div>
+    </div><button class="add-btn" onclick="changeQty(48,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍳</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">蒜泥五花肉</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$185</div>
+    </div><button class="add-btn" onclick="changeQty(49,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍳</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">炒蛤蜊</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$185</div>
+    </div><button class="add-btn" onclick="changeQty(50,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍳</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">炒海瓜子</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$185</div>
+    </div><button class="add-btn" onclick="changeQty(51,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍳</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">滑蛋牛肉</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$190</div>
+    </div><button class="add-btn" onclick="changeQty(52,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍳</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">滑蛋蝦仁</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$190</div>
+    </div><button class="add-btn" onclick="changeQty(53,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍳</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">川燙中卷</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$195</div>
+    </div><button class="add-btn" onclick="changeQty(54,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍳</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">白灼蝦</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$195</div>
+    </div><button class="add-btn" onclick="changeQty(55,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍳</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">糖醋雞丁</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$185</div>
+    </div><button class="add-btn" onclick="changeQty(56,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍳</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">糖醋排骨</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$195</div>
+    </div><button class="add-btn" onclick="changeQty(57,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍳</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">糖醋蝦球</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$195</div>
+    </div><button class="add-btn" onclick="changeQty(58,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍳</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">金沙豆腐</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$190</div>
+    </div><button class="add-btn" onclick="changeQty(59,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍳</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">金沙中卷</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$210</div>
+    </div><button class="add-btn" onclick="changeQty(60,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍳</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">金沙蝦球</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$210</div>
+    </div><button class="add-btn" onclick="changeQty(61,1)">+</button></div><div class="section-title">🥬時蔬類</div><div class="menu-item">
+    <div class="item-emoji">🥬</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">炒地瓜葉</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$110</div>
+    </div><button class="add-btn" onclick="changeQty(63,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🥬</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">炒空心菜</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$110</div>
+    </div><button class="add-btn" onclick="changeQty(64,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🥬</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">炒高麗菜</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$110</div>
+    </div><button class="add-btn" onclick="changeQty(65,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🥬</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">肉絲水蓮</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$150</div>
+    </div><button class="add-btn" onclick="changeQty(66,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🥬</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">地瓜葉皮蛋</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$150</div>
+    </div><button class="add-btn" onclick="changeQty(67,1)">+</button></div><div class="section-title">🟡酥炸類</div><div class="menu-item">
+    <div class="item-emoji">🟡</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">招牌黃金豆腐</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$170</div>
+    </div><button class="add-btn" onclick="changeQty(68,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🟡</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">招牌紅糟鰻</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$190</div>
+    </div><button class="add-btn" onclick="changeQty(69,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🟡</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">鹽酥鮮蚵</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$190</div>
+    </div><button class="add-btn" onclick="changeQty(70,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🟡</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">月亮蝦餅</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$190</div>
+    </div><button class="add-btn" onclick="changeQty(71,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🟡</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">椒鹽排骨</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$190</div>
+    </div><button class="add-btn" onclick="changeQty(72,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🟡</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">鹽酥蝦</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$190</div>
+    </div><button class="add-btn" onclick="changeQty(73,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🟡</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">椒鹽中卷</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$200</div>
+    </div><button class="add-btn" onclick="changeQty(74,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🟡</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">鳳梨蝦球</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$200</div>
+    </div><button class="add-btn" onclick="changeQty(75,1)">+</button></div><div class="section-title">🍚炒飯</div><div class="menu-item">
+    <div class="item-emoji">🍚</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">香腸炒飯</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$105</div>
+    </div><button class="add-btn" onclick="changeQty(1,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍚</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">豬肉炒飯</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$105</div>
+    </div><button class="add-btn" onclick="changeQty(2,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍚</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">牛肉炒飯</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$110</div>
+    </div><button class="add-btn" onclick="changeQty(3,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍚</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">羊肉炒飯</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$110</div>
+    </div><button class="add-btn" onclick="changeQty(4,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍚</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">蝦仁炒飯</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$115</div>
+    </div><button class="add-btn" onclick="changeQty(5,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍚</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">鮭魚炒飯</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$160</div>
+    </div><button class="add-btn" onclick="changeQty(6,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍚</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">咖哩豬肉炒飯</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$115</div>
+    </div><button class="add-btn" onclick="changeQty(7,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍚</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">咖哩牛肉炒飯</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$120</div>
+    </div><button class="add-btn" onclick="changeQty(8,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍚</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">咖哩羊肉炒飯</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$120</div>
+    </div><button class="add-btn" onclick="changeQty(9,1)">+</button></div><div class="section-title">🍝炒麵</div><div class="menu-item">
+    <div class="item-emoji">🍝</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">豬肉炒麵</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$105</div>
+    </div><button class="add-btn" onclick="changeQty(10,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍝</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">牛肉炒麵</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$110</div>
+    </div><button class="add-btn" onclick="changeQty(11,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍝</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">羊肉炒麵</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$110</div>
+    </div><button class="add-btn" onclick="changeQty(12,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍝</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">海鮮炒麵</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$125</div>
+    </div><button class="add-btn" onclick="changeQty(13,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍝</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">咖哩豬肉炒麵</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$115</div>
+    </div><button class="add-btn" onclick="changeQty(14,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍝</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">咖哩牛肉炒麵</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$120</div>
+    </div><button class="add-btn" onclick="changeQty(15,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍝</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">咖哩羊肉炒麵</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$120</div>
+    </div><button class="add-btn" onclick="changeQty(16,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍝</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">咖哩海鮮炒麵</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$135</div>
+    </div><button class="add-btn" onclick="changeQty(17,1)">+</button></div><div class="section-title">🍝炒烏龍麵</div><div class="menu-item">
+    <div class="item-emoji">🍝</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">豬肉炒烏龍麵</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$105</div>
+    </div><button class="add-btn" onclick="changeQty(18,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍝</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">牛肉炒烏龍麵</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$110</div>
+    </div><button class="add-btn" onclick="changeQty(19,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍝</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">羊肉炒烏龍麵</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$110</div>
+    </div><button class="add-btn" onclick="changeQty(20,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍝</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">海鮮炒烏龍麵</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$125</div>
+    </div><button class="add-btn" onclick="changeQty(21,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍝</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">咖哩豬肉炒烏龍麵</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$115</div>
+    </div><button class="add-btn" onclick="changeQty(22,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍝</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">咖哩牛肉炒烏龍麵</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$120</div>
+    </div><button class="add-btn" onclick="changeQty(23,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍝</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">咖哩羊肉炒烏龍麵</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$120</div>
+    </div><button class="add-btn" onclick="changeQty(24,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍝</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">咖哩海鮮炒烏龍麵</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$135</div>
+    </div><button class="add-btn" onclick="changeQty(25,1)">+</button></div><div class="section-title">🍝烏龍湯麵</div><div class="menu-item">
+    <div class="item-emoji">🍜</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">沙茶豬肉烏龍湯麵</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$110</div>
+    </div><button class="add-btn" onclick="changeQty(26,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍜</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">沙茶牛肉烏龍湯麵</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$115</div>
+    </div><button class="add-btn" onclick="changeQty(27,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍜</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">沙茶羊肉烏龍湯麵</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$115</div>
+    </div><button class="add-btn" onclick="changeQty(28,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🍜</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">海鮮烏龍湯麵</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$130</div>
+    </div><button class="add-btn" onclick="changeQty(29,1)">+</button></div><div class="section-title">🥣粥品</div><div class="menu-item">
+    <div class="item-emoji">🥣</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">玉米瘦肉粥</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$105</div>
+    </div><button class="add-btn" onclick="changeQty(30,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🥣</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">滑蛋牛肉粥</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$110</div>
+    </div><button class="add-btn" onclick="changeQty(31,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🥣</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">皮蛋瘦肉粥</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$115</div>
+    </div><button class="add-btn" onclick="changeQty(32,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🥣</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">海鮮總匯粥</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$120</div>
+    </div><button class="add-btn" onclick="changeQty(33,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🥣</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">虱目魚肚粥</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$135</div>
+    </div><button class="add-btn" onclick="changeQty(34,1)">+</button></div><div class="section-title">🥣湯品</div><div class="menu-item">
+    <div class="item-emoji">🥣</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">紫菜蛋花湯</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$50</div>
+    </div><button class="add-btn" onclick="changeQty(76,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🥣</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">貢丸湯</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$55</div>
+    </div><button class="add-btn" onclick="changeQty(77,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🥣</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">魚丸湯</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$55</div>
+    </div><button class="add-btn" onclick="changeQty(78,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🥣</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">番茄蛋花湯</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$65</div>
+    </div><button class="add-btn" onclick="changeQty(79,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🥣</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">薑絲蛤蜊湯</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$65</div>
+    </div><button class="add-btn" onclick="changeQty(80,1)">+</button></div><div class="menu-item">
+    <div class="item-emoji">🥣</div>
+    <div class="item-info">
+      <div class="item-name-row">
+        <span class="item-name">薑絲鮮蚵湯</span>
+        
+        
+        
+      </div>
+      <div class="item-price">$70</div>
+    </div><button class="add-btn" onclick="changeQty(81,1)">+</button></div></div></div>
 
   <div class="bottom-bar" id="bottom-bar">
     <div class="bottom-total">已選 <span id="bottom-price">$0</span></div>
@@ -411,6 +1210,7 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
   <div class="closed-icon">🔒</div>
   <div class="closed-title">目前為公休時間</div>
   <div class="closed-msg">暫不開放點餐，感謝您的光臨。<br>請於營業時段再來訂餐，謝謝！<br><span id="closed-range-hint" style="font-size:.875rem;opacity:.7;margin-top:.5rem;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90vw"></span><span id="closed-range-note" style="font-size:.8125rem;opacity:.65;margin-top:.25rem;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90vw"></span></div>
+  <button class="closed-adm-btn" onclick="admOpenPw()" title="">⚙️</button>
 </div>
 
 <!-- 公告彈窗 -->
@@ -512,9 +1312,6 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
         </div>
       </div>
     </div><!-- end cart-body -->
-    <div class="cart-scroll-fade" id="cart-scroll-fade">
-      <div class="cart-scroll-arrow"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path></svg></div>
-    </div>
     <div class="cart-summary">
       <div class="summary-row"><span>總數量</span><span id="sum-qty">0 項</span></div>
       <div class="summary-row"><span>小計</span><span id="sum-sub">$0</span></div>
@@ -546,9 +1343,7 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
      管理後台（密碼保護，客人看不到）
 ════════════════════════════════════════ -->
 
-<!-- 後台入口按鈕（僅在點餐頁顯示） -->
-<button id="adm-fab" class="adm-fab" onclick="admOpenPw()" title="管理後台">⚙️</button>
-
+<!-- 後台入口：連按 Logo 3 下（header z-index 高於公休遮罩，任何狀態皆可點）-->
 <!-- 密碼輸入遮罩 -->
 <div class="adm-pw-overlay" id="adm-pw-overlay">
   <div class="adm-pw-box">
@@ -567,8 +1362,8 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
   <div class="adm-topbar">
     <div class="adm-topbar-title">🍱 管理後台</div>
     <div class="adm-tabs">
-      <button class="adm-tab" id="adm-tab-store" onclick="admShowPage('store',this)">🏪 店家</button>
-      <button class="adm-tab active" id="adm-tab-menu" onclick="admShowPage('menu',this)">📋 菜單</button>
+      <button class="adm-tab active" id="adm-tab-store" onclick="admShowPage('store',this)">🏪 店家</button>
+      <button class="adm-tab" id="adm-tab-menu" onclick="admShowPage('menu',this)">📋 菜單</button>
     </div>
     <button class="adm-save-btn" onclick="admSaveAndDownload()">💾 存檔</button>
     <button class="adm-close-btn" onclick="admClose()">✕ 關閉</button>
@@ -577,7 +1372,7 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
   <div class="adm-body">
 
     <!-- ── 店家設定頁 ── -->
-    <div class="adm-page" id="adm-page-store">
+    <div class="adm-page active" id="adm-page-store">
 
       <div class="adm-card">
         <div class="adm-card-title">⚡ 營業狀態 <span class="adm-card-sub">（最常修改）</span></div>
@@ -605,13 +1400,39 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
     </div>
     <div class="closed-range-fields">
       <div class="closed-range-label">⏰ 開始時間（台灣時間）</div>
-      <input type="datetime-local" class="adm-input cr-start" value="2026-05-23T00:00" style="width:100%">
+      <div class="cr-dt-row">
+        <input type="date" class="cr-start-d" value="2026-05-23">
+        <input type="time" class="cr-start-t" value="00:00">
+      </div>
       <div class="closed-range-label" style="margin-top:.25rem">⏰ 結束時間（台灣時間）</div>
-      <input type="datetime-local" class="adm-input cr-end" value="2026-05-30T23:59" style="width:100%">
+      <div class="cr-dt-row">
+        <input type="date" class="cr-end-d" value="2026-05-30">
+        <input type="time" class="cr-end-t" value="23:59">
+      </div>
       <div class="closed-range-label" style="margin-top:.25rem">📝 備註（選填，例：五一連假）</div>
       <input type="text" class="adm-input cr-note" placeholder="備註說明（顯示於公休遮罩下方）" value="老闆出國充充電，5/5 - 5/12 公休８日。我們約好 5/31 再見！🔋" style="width:100%">
     </div>
-    <div style="font-size:.7rem;color:#aaa;margin-top:.25rem">💡 跨日示例：5/5 22:00 ～ 5/6 10:00 → 開始填 2025-05-05T22:00，結束填 2025-05-06T10:00</div>
+    <div style="font-size:.7rem;color:#aaa;margin-top:.25rem">💡 跨日示例：5/5 22:00 ～ 5/6 10:00 → 日期填 2025-05-05，時間填 22:00</div>
+  </div><div class="closed-range-row">
+    <div class="closed-range-row-title">
+      📅 公休時段
+      <button class="adm-del-btn" onclick="this.closest('.closed-range-row').remove()" title="刪除此時段">✕</button>
+    </div>
+    <div class="closed-range-fields">
+      <div class="closed-range-label">⏰ 開始時間（台灣時間）</div>
+      <div class="cr-dt-row">
+        <input type="date" class="cr-start-d" value="2026-05-07">
+        <input type="time" class="cr-start-t" value="00:00">
+      </div>
+      <div class="closed-range-label" style="margin-top:.25rem">⏰ 結束時間（台灣時間）</div>
+      <div class="cr-dt-row">
+        <input type="date" class="cr-end-d" value="2026-05-07">
+        <input type="time" class="cr-end-t" value="23:59">
+      </div>
+      <div class="closed-range-label" style="margin-top:.25rem">📝 備註（選填，例：五一連假）</div>
+      <input type="text" class="adm-input cr-note" placeholder="備註說明（顯示於公休遮罩下方）" value="" style="width:100%">
+    </div>
+    <div style="font-size:.7rem;color:#aaa;margin-top:.25rem">💡 跨日示例：5/5 22:00 ～ 5/6 10:00 → 日期填 2025-05-05，時間填 22:00</div>
   </div></div>
         <button class="adm-add-row-btn" onclick="admAddClosedDateRow()">＋ 新增公休時段</button>
       </div>
@@ -724,7 +1545,7 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
     </div><!-- /store -->
 
     <!-- ── 菜單管理頁 ── -->
-    <div class="adm-page active" id="adm-page-menu">
+    <div class="adm-page" id="adm-page-menu">
 
       <div class="adm-card">
         <div class="adm-card-title">📋 菜單品項</div>
@@ -733,9 +1554,1337 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
           🖐 <strong>拖曳排序</strong>：按住左側 <strong>⠿</strong> 圖示上下拖曳即可調整品項順序（手機也支援）。<br>
           <strong>隱藏</strong>：菜單上完全看不到。<strong>售完</strong>：顯示「已售完」無法加入購物車。
         </div>
-        <div class="adm-filter-row" id="adm-cat-filter-row"><button class="adm-filter-btn" onclick="admSetCatFilter('全部')">全部</button><button class="adm-filter-btn active" onclick="admSetCatFilter('✨新品上市')">✨新品上市</button><button class="adm-filter-btn" onclick="admSetCatFilter('🍳熱炒類')">🍳熱炒類</button><button class="adm-filter-btn" onclick="admSetCatFilter('🥬時蔬類')">🥬時蔬類</button><button class="adm-filter-btn" onclick="admSetCatFilter('🟡酥炸類')">🟡酥炸類</button><button class="adm-filter-btn" onclick="admSetCatFilter('🍚炒飯')">🍚炒飯</button><button class="adm-filter-btn" onclick="admSetCatFilter('🍝炒麵')">🍝炒麵</button><button class="adm-filter-btn" onclick="admSetCatFilter('🍝炒烏龍麵')">🍝炒烏龍麵</button><button class="adm-filter-btn" onclick="admSetCatFilter('🍝烏龍湯麵')">🍝烏龍湯麵</button><button class="adm-filter-btn" onclick="admSetCatFilter('🥣粥品')">🥣粥品</button><button class="adm-filter-btn" onclick="admSetCatFilter('🥣湯品')">🥣湯品</button></div>
+        <div class="adm-filter-row" id="adm-cat-filter-row"><button class="adm-filter-btn active" onclick="admSetCatFilter('全部')">全部</button><button class="adm-filter-btn" onclick="admSetCatFilter('✨新品上市')">✨新品上市</button><button class="adm-filter-btn" onclick="admSetCatFilter('🍳熱炒類')">🍳熱炒類</button><button class="adm-filter-btn" onclick="admSetCatFilter('🥬時蔬類')">🥬時蔬類</button><button class="adm-filter-btn" onclick="admSetCatFilter('🟡酥炸類')">🟡酥炸類</button><button class="adm-filter-btn" onclick="admSetCatFilter('🍚炒飯')">🍚炒飯</button><button class="adm-filter-btn" onclick="admSetCatFilter('🍝炒麵')">🍝炒麵</button><button class="adm-filter-btn" onclick="admSetCatFilter('🍝炒烏龍麵')">🍝炒烏龍麵</button><button class="adm-filter-btn" onclick="admSetCatFilter('🍝烏龍湯麵')">🍝烏龍湯麵</button><button class="adm-filter-btn" onclick="admSetCatFilter('🥣粥品')">🥣粥品</button><button class="adm-filter-btn" onclick="admSetCatFilter('🥣湯品')">🥣湯品</button></div>
         <button class="adm-btn-save" style="width:100%;margin-bottom:.875rem;border-radius:.625rem;padding:.625rem;font-size:.9375rem;font-weight:700;cursor:pointer;font-family:'Noto Sans TC',sans-serif" onclick="admOpenAddModal()">＋ 新增品項</button>
-        <div id="adm-menu-list"></div>
+        <div id="adm-menu-list"><div class="adm-item-card" draggable="true" data-id="1">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍚</div>
+        <div class="adm-item-name">香腸炒飯</div>
+        <div class="adm-item-price">$105</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(1)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(1,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(1,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(1,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(1,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(1)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="2">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍚</div>
+        <div class="adm-item-name">豬肉炒飯</div>
+        <div class="adm-item-price">$105</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(2)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(2,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(2,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(2,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(2,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(2)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="3">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍚</div>
+        <div class="adm-item-name">牛肉炒飯</div>
+        <div class="adm-item-price">$110</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(3)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(3,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(3,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(3,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(3,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(3)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="4">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍚</div>
+        <div class="adm-item-name">羊肉炒飯</div>
+        <div class="adm-item-price">$110</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(4)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(4,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(4,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(4,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(4,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(4)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="5">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍚</div>
+        <div class="adm-item-name">蝦仁炒飯</div>
+        <div class="adm-item-price">$115</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(5)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(5,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(5,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(5,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(5,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(5)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="6">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍚</div>
+        <div class="adm-item-name">鮭魚炒飯</div>
+        <div class="adm-item-price">$160</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(6)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(6,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(6,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(6,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(6,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(6)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="7">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍚</div>
+        <div class="adm-item-name">咖哩豬肉炒飯</div>
+        <div class="adm-item-price">$115</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(7)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(7,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(7,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(7,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(7,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(7)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="8">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍚</div>
+        <div class="adm-item-name">咖哩牛肉炒飯</div>
+        <div class="adm-item-price">$120</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(8)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(8,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(8,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(8,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(8,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(8)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="9">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍚</div>
+        <div class="adm-item-name">咖哩羊肉炒飯</div>
+        <div class="adm-item-price">$120</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(9)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(9,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(9,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(9,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(9,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(9)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="10">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍝</div>
+        <div class="adm-item-name">豬肉炒麵</div>
+        <div class="adm-item-price">$105</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(10)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(10,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(10,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(10,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(10,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(10)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="11">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍝</div>
+        <div class="adm-item-name">牛肉炒麵</div>
+        <div class="adm-item-price">$110</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(11)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(11,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(11,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(11,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(11,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(11)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="12">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍝</div>
+        <div class="adm-item-name">羊肉炒麵</div>
+        <div class="adm-item-price">$110</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(12)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(12,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(12,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(12,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(12,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(12)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="13">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍝</div>
+        <div class="adm-item-name">海鮮炒麵</div>
+        <div class="adm-item-price">$125</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(13)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(13,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(13,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(13,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(13,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(13)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="14">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍝</div>
+        <div class="adm-item-name">咖哩豬肉炒麵</div>
+        <div class="adm-item-price">$115</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(14)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(14,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(14,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(14,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(14,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(14)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="15">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍝</div>
+        <div class="adm-item-name">咖哩牛肉炒麵</div>
+        <div class="adm-item-price">$120</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(15)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(15,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(15,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(15,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(15,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(15)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="16">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍝</div>
+        <div class="adm-item-name">咖哩羊肉炒麵</div>
+        <div class="adm-item-price">$120</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(16)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(16,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(16,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(16,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(16,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(16)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="17">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍝</div>
+        <div class="adm-item-name">咖哩海鮮炒麵</div>
+        <div class="adm-item-price">$135</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(17)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(17,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(17,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(17,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(17,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(17)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="18">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍝</div>
+        <div class="adm-item-name">豬肉炒烏龍麵</div>
+        <div class="adm-item-price">$105</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(18)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(18,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(18,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(18,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(18,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(18)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="19">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍝</div>
+        <div class="adm-item-name">牛肉炒烏龍麵</div>
+        <div class="adm-item-price">$110</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(19)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(19,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(19,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(19,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(19,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(19)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="20">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍝</div>
+        <div class="adm-item-name">羊肉炒烏龍麵</div>
+        <div class="adm-item-price">$110</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(20)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(20,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(20,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(20,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(20,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(20)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="21">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍝</div>
+        <div class="adm-item-name">海鮮炒烏龍麵</div>
+        <div class="adm-item-price">$125</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(21)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(21,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(21,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(21,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(21,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(21)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="22">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍝</div>
+        <div class="adm-item-name">咖哩豬肉炒烏龍麵</div>
+        <div class="adm-item-price">$115</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(22)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(22,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(22,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(22,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(22,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(22)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="23">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍝</div>
+        <div class="adm-item-name">咖哩牛肉炒烏龍麵</div>
+        <div class="adm-item-price">$120</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(23)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(23,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(23,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(23,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(23,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(23)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="24">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍝</div>
+        <div class="adm-item-name">咖哩羊肉炒烏龍麵</div>
+        <div class="adm-item-price">$120</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(24)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(24,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(24,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(24,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(24,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(24)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="25">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍝</div>
+        <div class="adm-item-name">咖哩海鮮炒烏龍麵</div>
+        <div class="adm-item-price">$135</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(25)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(25,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(25,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(25,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(25,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(25)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="26">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍜</div>
+        <div class="adm-item-name">沙茶豬肉烏龍湯麵</div>
+        <div class="adm-item-price">$110</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(26)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(26,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(26,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(26,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(26,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(26)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="27">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍜</div>
+        <div class="adm-item-name">沙茶牛肉烏龍湯麵</div>
+        <div class="adm-item-price">$115</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(27)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(27,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(27,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(27,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(27,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(27)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="28">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍜</div>
+        <div class="adm-item-name">沙茶羊肉烏龍湯麵</div>
+        <div class="adm-item-price">$115</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(28)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(28,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(28,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(28,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(28,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(28)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="29">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍜</div>
+        <div class="adm-item-name">海鮮烏龍湯麵</div>
+        <div class="adm-item-price">$130</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(29)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(29,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(29,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(29,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(29,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(29)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="30">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🥣</div>
+        <div class="adm-item-name">玉米瘦肉粥</div>
+        <div class="adm-item-price">$105</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(30)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(30,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(30,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(30,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(30,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(30)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="31">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🥣</div>
+        <div class="adm-item-name">滑蛋牛肉粥</div>
+        <div class="adm-item-price">$110</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(31)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(31,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(31,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(31,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(31,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(31)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="32">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🥣</div>
+        <div class="adm-item-name">皮蛋瘦肉粥</div>
+        <div class="adm-item-price">$115</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(32)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(32,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(32,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(32,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(32,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(32)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="33">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🥣</div>
+        <div class="adm-item-name">海鮮總匯粥</div>
+        <div class="adm-item-price">$120</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(33)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(33,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(33,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(33,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(33,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(33)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="34">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🥣</div>
+        <div class="adm-item-name">虱目魚肚粥</div>
+        <div class="adm-item-price">$135</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(34)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(34,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(34,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(34,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(34,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(34)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="100">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍚</div>
+        <div class="adm-item-name">白飯</div>
+        <div class="adm-item-price">$20</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(100)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(100,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(100,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(100,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(100,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(100)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="35">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍳</div>
+        <div class="adm-item-name">塔香烘蛋</div>
+        <div class="adm-item-price">$135</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(35)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(35,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(35,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(35,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(35,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(35)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="36">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍳</div>
+        <div class="adm-item-name">青蔥烘蛋</div>
+        <div class="adm-item-price">$135</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(36)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(36,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(36,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(36,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(36,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(36)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="37">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍳</div>
+        <div class="adm-item-name">菜脯蛋</div>
+        <div class="adm-item-price">$135</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(37)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(37,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(37,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(37,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(37,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(37)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="38">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍳</div>
+        <div class="adm-item-name">蚵仔煎蛋</div>
+        <div class="adm-item-price">$160</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(38)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(38,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(38,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(38,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(38,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(38)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="39">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍳</div>
+        <div class="adm-item-name">番茄炒蛋</div>
+        <div class="adm-item-price">$180</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(39)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(39,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(39,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(39,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(39,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(39)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="40">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍳</div>
+        <div class="adm-item-name">麻婆豆腐🌶️</div>
+        <div class="adm-item-price">$180</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(40)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(40,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(40,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(40,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(40,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(40)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="41">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍳</div>
+        <div class="adm-item-name">豆豉鮮蚵</div>
+        <div class="adm-item-price">$180</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(41)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(41,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(41,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(41,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(41,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(41)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="42">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍳</div>
+        <div class="adm-item-name">豆豉排骨</div>
+        <div class="adm-item-price">$195</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(42)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(42,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(42,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(42,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(42,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(42)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="43">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍳</div>
+        <div class="adm-item-name">蠔油雞丁</div>
+        <div class="adm-item-price">$180</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(43)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(43,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(43,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(43,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(43,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(43)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="44">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍳</div>
+        <div class="adm-item-name">宮保雞丁🌶️</div>
+        <div class="adm-item-price">$180</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(44)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(44,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(44,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(44,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(44,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(44)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="45">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍳</div>
+        <div class="adm-item-name">宮保中卷🌶️</div>
+        <div class="adm-item-price">$180</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(45)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(45,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(45,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(45,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(45,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(45)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="46">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍳</div>
+        <div class="adm-item-name">熱炒豬肉</div>
+        <div class="adm-item-price">$180</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(46)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(46,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(46,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(46,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(46,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(46)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="47">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍳</div>
+        <div class="adm-item-name">熱炒牛肉</div>
+        <div class="adm-item-price">$190</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(47)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(47,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(47,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(47,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(47,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(47)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="48">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍳</div>
+        <div class="adm-item-name">熱炒羊肉</div>
+        <div class="adm-item-price">$190</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(48)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(48,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(48,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(48,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(48,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(48)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="49">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍳</div>
+        <div class="adm-item-name">蒜泥五花肉</div>
+        <div class="adm-item-price">$185</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(49)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(49,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(49,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(49,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(49,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(49)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="50">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍳</div>
+        <div class="adm-item-name">炒蛤蜊</div>
+        <div class="adm-item-price">$185</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(50)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(50,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(50,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(50,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(50,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(50)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="51">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍳</div>
+        <div class="adm-item-name">炒海瓜子</div>
+        <div class="adm-item-price">$185</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(51)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(51,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(51,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(51,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(51,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(51)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="52">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍳</div>
+        <div class="adm-item-name">滑蛋牛肉</div>
+        <div class="adm-item-price">$190</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(52)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(52,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(52,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(52,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(52,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(52)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="53">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍳</div>
+        <div class="adm-item-name">滑蛋蝦仁</div>
+        <div class="adm-item-price">$190</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(53)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(53,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(53,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(53,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(53,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(53)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="54">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍳</div>
+        <div class="adm-item-name">川燙中卷</div>
+        <div class="adm-item-price">$195</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(54)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(54,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(54,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(54,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(54,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(54)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="55">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍳</div>
+        <div class="adm-item-name">白灼蝦</div>
+        <div class="adm-item-price">$195</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(55)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(55,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(55,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(55,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(55,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(55)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="56">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍳</div>
+        <div class="adm-item-name">糖醋雞丁</div>
+        <div class="adm-item-price">$185</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(56)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(56,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(56,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(56,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(56,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(56)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="57">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍳</div>
+        <div class="adm-item-name">糖醋排骨</div>
+        <div class="adm-item-price">$195</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(57)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(57,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(57,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(57,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(57,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(57)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="58">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍳</div>
+        <div class="adm-item-name">糖醋蝦球</div>
+        <div class="adm-item-price">$195</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(58)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(58,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(58,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(58,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(58,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(58)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="59">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍳</div>
+        <div class="adm-item-name">金沙豆腐</div>
+        <div class="adm-item-price">$190</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(59)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(59,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(59,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(59,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(59,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(59)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="60">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍳</div>
+        <div class="adm-item-name">金沙中卷</div>
+        <div class="adm-item-price">$210</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(60)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(60,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(60,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(60,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(60,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(60)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="61">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🍳</div>
+        <div class="adm-item-name">金沙蝦球</div>
+        <div class="adm-item-price">$210</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(61)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(61,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(61,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(61,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(61,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(61)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card is-hidden" draggable="true" data-id="62">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🥬</div>
+        <div class="adm-item-name">炒菠菜</div>
+        <div class="adm-item-price">$110</div>
+        <div class="adm-item-tags"><span class="adm-tag adm-tag-hidden">已隱藏</span></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(62)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(62,'isHidden')">👁 顯示</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(62,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(62,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(62,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(62)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="63">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🥬</div>
+        <div class="adm-item-name">炒地瓜葉</div>
+        <div class="adm-item-price">$110</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(63)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(63,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(63,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(63,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(63,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(63)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="64">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🥬</div>
+        <div class="adm-item-name">炒空心菜</div>
+        <div class="adm-item-price">$110</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(64)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(64,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(64,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(64,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(64,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(64)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="65">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🥬</div>
+        <div class="adm-item-name">炒高麗菜</div>
+        <div class="adm-item-price">$110</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(65)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(65,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(65,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(65,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(65,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(65)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="66">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🥬</div>
+        <div class="adm-item-name">肉絲水蓮</div>
+        <div class="adm-item-price">$150</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(66)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(66,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(66,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(66,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(66,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(66)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="67">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🥬</div>
+        <div class="adm-item-name">地瓜葉皮蛋</div>
+        <div class="adm-item-price">$150</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(67)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(67,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(67,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(67,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(67,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(67)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="68">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🟡</div>
+        <div class="adm-item-name">招牌黃金豆腐</div>
+        <div class="adm-item-price">$170</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(68)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(68,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(68,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(68,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(68,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(68)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="69">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🟡</div>
+        <div class="adm-item-name">招牌紅糟鰻</div>
+        <div class="adm-item-price">$190</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(69)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(69,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(69,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(69,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(69,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(69)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="70">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🟡</div>
+        <div class="adm-item-name">鹽酥鮮蚵</div>
+        <div class="adm-item-price">$190</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(70)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(70,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(70,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(70,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(70,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(70)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="71">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🟡</div>
+        <div class="adm-item-name">月亮蝦餅</div>
+        <div class="adm-item-price">$190</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(71)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(71,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(71,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(71,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(71,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(71)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="72">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🟡</div>
+        <div class="adm-item-name">椒鹽排骨</div>
+        <div class="adm-item-price">$190</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(72)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(72,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(72,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(72,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(72,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(72)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="73">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🟡</div>
+        <div class="adm-item-name">鹽酥蝦</div>
+        <div class="adm-item-price">$190</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(73)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(73,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(73,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(73,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(73,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(73)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="74">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🟡</div>
+        <div class="adm-item-name">椒鹽中卷</div>
+        <div class="adm-item-price">$200</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(74)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(74,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(74,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(74,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(74,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(74)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="75">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🟡</div>
+        <div class="adm-item-name">鳳梨蝦球</div>
+        <div class="adm-item-price">$200</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(75)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(75,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(75,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(75,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(75,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(75)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="76">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🥣</div>
+        <div class="adm-item-name">紫菜蛋花湯</div>
+        <div class="adm-item-price">$50</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(76)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(76,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(76,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(76,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(76,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(76)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="77">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🥣</div>
+        <div class="adm-item-name">貢丸湯</div>
+        <div class="adm-item-price">$55</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(77)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(77,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(77,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(77,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(77,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(77)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="78">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🥣</div>
+        <div class="adm-item-name">魚丸湯</div>
+        <div class="adm-item-price">$55</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(78)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(78,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(78,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(78,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(78,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(78)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="79">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🥣</div>
+        <div class="adm-item-name">番茄蛋花湯</div>
+        <div class="adm-item-price">$65</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(79)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(79,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(79,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(79,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(79,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(79)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="80">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🥣</div>
+        <div class="adm-item-name">薑絲蛤蜊湯</div>
+        <div class="adm-item-price">$65</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(80)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(80,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(80,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(80,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(80,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(80)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="81">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🥣</div>
+        <div class="adm-item-name">薑絲鮮蚵湯</div>
+        <div class="adm-item-price">$70</div>
+        <div class="adm-item-tags"></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(81)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(81,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(81,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(81,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(81,'isNew')">✨ 新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(81)">🗑 刪除</button>
+      </div>
+    </div><div class="adm-item-card" draggable="true" data-id="101">
+      <div class="adm-item-hd">
+        <span class="drag-handle" title="按住拖曳排序">⠿</span>
+        <div class="adm-item-emoji">🟡</div>
+        <div class="adm-item-name">椒鹽秋刀魚</div>
+        <div class="adm-item-price">$180</div>
+        <div class="adm-item-tags"><span class="adm-tag adm-tag-new">新品</span></div>
+      </div>
+      <div class="adm-item-actions">
+        <button class="adm-act-btn adm-btn-edit" onclick="admOpenEditModal(101)">✏️ 編輯</button>
+        <button class="adm-act-btn adm-btn-hide" onclick="admToggle(101,'isHidden')">🙈 隱藏</button>
+        <button class="adm-act-btn adm-btn-sold" onclick="admToggle(101,'isSoldOut')">❌ 售完</button>
+        <button class="adm-act-btn adm-btn-pop" onclick="admToggle(101,'popular')">🔥 熱銷</button>
+        <button class="adm-act-btn adm-btn-new" onclick="admToggle(101,'isNew')">✨取消新品</button>
+        <button class="adm-act-btn adm-btn-del" onclick="admDelete(101)">🗑 刪除</button>
+      </div>
+    </div></div>
 
       <div class="adm-card">
         <div class="adm-card-title">🗂 分類列表順序 <span class="adm-card-sub">（排序・新增・改名）</span></div>
@@ -751,7 +2900,67 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
           <input type="text" id="adm-new-cat-input" class="adm-input" placeholder="輸入新分類名稱" style="flex:1;margin-bottom:0">
           <button class="adm-btn-save" style="flex-shrink:0;border-radius:.5rem;padding:.375rem .625rem;font-size:.8125rem;white-space:nowrap" onclick="admAddCat()">➕ 新增</button>
         </div>
-        <div id="adm-cats-list" style="display:flex;flex-direction:column;gap:.375rem;margin-bottom:.75rem"></div>
+        <div id="adm-cats-list" style="display:flex;flex-direction:column;gap:.375rem;margin-bottom:.75rem">
+    <div style="display:flex;align-items:center;gap:.375rem;background:#f8f8f8;border:1.5px solid #e0e0e0;border-radius:.5rem;padding:.375rem .5rem;transition:border-color .15s,background .15s" draggable="true" data-cat-idx="0">
+      <span class="drag-handle" title="按住拖曳排序">⠿</span>
+      <span style="flex:1;font-size:.9375rem;color:#1a2455;font-weight:500;word-break:break-all">✨新品上市</span>
+      <button onclick="admRenameCat(0)" style="flex-shrink:0;padding:.25rem .5rem;border-radius:.375rem;border:1.5px solid #1a2455;background:white;color:#1a2455;font-size:.75rem;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap" title="改名">✏️ 改名</button>
+      <button onclick="admDeleteCat(0)" style="flex-shrink:0;padding:.25rem .5rem;border-radius:.375rem;border:1.5px solid #c4390a;background:white;color:#c4390a;font-size:.75rem;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap" title="刪除">🗑</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:.375rem;background:#f8f8f8;border:1.5px solid #e0e0e0;border-radius:.5rem;padding:.375rem .5rem;transition:border-color .15s,background .15s" draggable="true" data-cat-idx="1">
+      <span class="drag-handle" title="按住拖曳排序">⠿</span>
+      <span style="flex:1;font-size:.9375rem;color:#1a2455;font-weight:500;word-break:break-all">🍳熱炒類</span>
+      <button onclick="admRenameCat(1)" style="flex-shrink:0;padding:.25rem .5rem;border-radius:.375rem;border:1.5px solid #1a2455;background:white;color:#1a2455;font-size:.75rem;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap" title="改名">✏️ 改名</button>
+      <button onclick="admDeleteCat(1)" style="flex-shrink:0;padding:.25rem .5rem;border-radius:.375rem;border:1.5px solid #c4390a;background:white;color:#c4390a;font-size:.75rem;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap" title="刪除">🗑</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:.375rem;background:#f8f8f8;border:1.5px solid #e0e0e0;border-radius:.5rem;padding:.375rem .5rem;transition:border-color .15s,background .15s" draggable="true" data-cat-idx="2">
+      <span class="drag-handle" title="按住拖曳排序">⠿</span>
+      <span style="flex:1;font-size:.9375rem;color:#1a2455;font-weight:500;word-break:break-all">🥬時蔬類</span>
+      <button onclick="admRenameCat(2)" style="flex-shrink:0;padding:.25rem .5rem;border-radius:.375rem;border:1.5px solid #1a2455;background:white;color:#1a2455;font-size:.75rem;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap" title="改名">✏️ 改名</button>
+      <button onclick="admDeleteCat(2)" style="flex-shrink:0;padding:.25rem .5rem;border-radius:.375rem;border:1.5px solid #c4390a;background:white;color:#c4390a;font-size:.75rem;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap" title="刪除">🗑</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:.375rem;background:#f8f8f8;border:1.5px solid #e0e0e0;border-radius:.5rem;padding:.375rem .5rem;transition:border-color .15s,background .15s" draggable="true" data-cat-idx="3">
+      <span class="drag-handle" title="按住拖曳排序">⠿</span>
+      <span style="flex:1;font-size:.9375rem;color:#1a2455;font-weight:500;word-break:break-all">🟡酥炸類</span>
+      <button onclick="admRenameCat(3)" style="flex-shrink:0;padding:.25rem .5rem;border-radius:.375rem;border:1.5px solid #1a2455;background:white;color:#1a2455;font-size:.75rem;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap" title="改名">✏️ 改名</button>
+      <button onclick="admDeleteCat(3)" style="flex-shrink:0;padding:.25rem .5rem;border-radius:.375rem;border:1.5px solid #c4390a;background:white;color:#c4390a;font-size:.75rem;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap" title="刪除">🗑</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:.375rem;background:#f8f8f8;border:1.5px solid #e0e0e0;border-radius:.5rem;padding:.375rem .5rem;transition:border-color .15s,background .15s" draggable="true" data-cat-idx="4">
+      <span class="drag-handle" title="按住拖曳排序">⠿</span>
+      <span style="flex:1;font-size:.9375rem;color:#1a2455;font-weight:500;word-break:break-all">🍚炒飯</span>
+      <button onclick="admRenameCat(4)" style="flex-shrink:0;padding:.25rem .5rem;border-radius:.375rem;border:1.5px solid #1a2455;background:white;color:#1a2455;font-size:.75rem;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap" title="改名">✏️ 改名</button>
+      <button onclick="admDeleteCat(4)" style="flex-shrink:0;padding:.25rem .5rem;border-radius:.375rem;border:1.5px solid #c4390a;background:white;color:#c4390a;font-size:.75rem;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap" title="刪除">🗑</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:.375rem;background:#f8f8f8;border:1.5px solid #e0e0e0;border-radius:.5rem;padding:.375rem .5rem;transition:border-color .15s,background .15s" draggable="true" data-cat-idx="5">
+      <span class="drag-handle" title="按住拖曳排序">⠿</span>
+      <span style="flex:1;font-size:.9375rem;color:#1a2455;font-weight:500;word-break:break-all">🍝炒麵</span>
+      <button onclick="admRenameCat(5)" style="flex-shrink:0;padding:.25rem .5rem;border-radius:.375rem;border:1.5px solid #1a2455;background:white;color:#1a2455;font-size:.75rem;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap" title="改名">✏️ 改名</button>
+      <button onclick="admDeleteCat(5)" style="flex-shrink:0;padding:.25rem .5rem;border-radius:.375rem;border:1.5px solid #c4390a;background:white;color:#c4390a;font-size:.75rem;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap" title="刪除">🗑</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:.375rem;background:#f8f8f8;border:1.5px solid #e0e0e0;border-radius:.5rem;padding:.375rem .5rem;transition:border-color .15s,background .15s" draggable="true" data-cat-idx="6">
+      <span class="drag-handle" title="按住拖曳排序">⠿</span>
+      <span style="flex:1;font-size:.9375rem;color:#1a2455;font-weight:500;word-break:break-all">🍝炒烏龍麵</span>
+      <button onclick="admRenameCat(6)" style="flex-shrink:0;padding:.25rem .5rem;border-radius:.375rem;border:1.5px solid #1a2455;background:white;color:#1a2455;font-size:.75rem;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap" title="改名">✏️ 改名</button>
+      <button onclick="admDeleteCat(6)" style="flex-shrink:0;padding:.25rem .5rem;border-radius:.375rem;border:1.5px solid #c4390a;background:white;color:#c4390a;font-size:.75rem;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap" title="刪除">🗑</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:.375rem;background:#f8f8f8;border:1.5px solid #e0e0e0;border-radius:.5rem;padding:.375rem .5rem;transition:border-color .15s,background .15s" draggable="true" data-cat-idx="7">
+      <span class="drag-handle" title="按住拖曳排序">⠿</span>
+      <span style="flex:1;font-size:.9375rem;color:#1a2455;font-weight:500;word-break:break-all">🍝烏龍湯麵</span>
+      <button onclick="admRenameCat(7)" style="flex-shrink:0;padding:.25rem .5rem;border-radius:.375rem;border:1.5px solid #1a2455;background:white;color:#1a2455;font-size:.75rem;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap" title="改名">✏️ 改名</button>
+      <button onclick="admDeleteCat(7)" style="flex-shrink:0;padding:.25rem .5rem;border-radius:.375rem;border:1.5px solid #c4390a;background:white;color:#c4390a;font-size:.75rem;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap" title="刪除">🗑</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:.375rem;background:#f8f8f8;border:1.5px solid #e0e0e0;border-radius:.5rem;padding:.375rem .5rem;transition:border-color .15s,background .15s" draggable="true" data-cat-idx="8">
+      <span class="drag-handle" title="按住拖曳排序">⠿</span>
+      <span style="flex:1;font-size:.9375rem;color:#1a2455;font-weight:500;word-break:break-all">🥣粥品</span>
+      <button onclick="admRenameCat(8)" style="flex-shrink:0;padding:.25rem .5rem;border-radius:.375rem;border:1.5px solid #1a2455;background:white;color:#1a2455;font-size:.75rem;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap" title="改名">✏️ 改名</button>
+      <button onclick="admDeleteCat(8)" style="flex-shrink:0;padding:.25rem .5rem;border-radius:.375rem;border:1.5px solid #c4390a;background:white;color:#c4390a;font-size:.75rem;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap" title="刪除">🗑</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:.375rem;background:#f8f8f8;border:1.5px solid #e0e0e0;border-radius:.5rem;padding:.375rem .5rem;transition:border-color .15s,background .15s" draggable="true" data-cat-idx="9">
+      <span class="drag-handle" title="按住拖曳排序">⠿</span>
+      <span style="flex:1;font-size:.9375rem;color:#1a2455;font-weight:500;word-break:break-all">🥣湯品</span>
+      <button onclick="admRenameCat(9)" style="flex-shrink:0;padding:.25rem .5rem;border-radius:.375rem;border:1.5px solid #1a2455;background:white;color:#1a2455;font-size:.75rem;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap" title="改名">✏️ 改名</button>
+      <button onclick="admDeleteCat(9)" style="flex-shrink:0;padding:.25rem .5rem;border-radius:.375rem;border:1.5px solid #c4390a;background:white;color:#c4390a;font-size:.75rem;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap" title="刪除">🗑</button>
+    </div></div>
 
     </div><!-- /menu -->
 
@@ -765,7 +2974,7 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
     <div class="adm-modal-title" id="adm-modal-title"><!-- 由 JS 動態填入 --></div>
 
     <label class="adm-label">分類 <span class="sub">（必須與分類列表名稱完全一致）</span></label>
-    <select class="adm-select" id="ef-cat"><!-- 由 JS admPopulateCatSelect() 動態填入 --></select>
+    <select class="adm-select" id="ef-cat"><option value="✨新品上市">✨新品上市</option><option value="🍳熱炒類">🍳熱炒類</option><option value="🥬時蔬類">🥬時蔬類</option><option value="🟡酥炸類">🟡酥炸類</option><option value="🍚炒飯">🍚炒飯</option><option value="🍝炒麵">🍝炒麵</option><option value="🍝炒烏龍麵">🍝炒烏龍麵</option><option value="🍝烏龍湯麵">🍝烏龍湯麵</option><option value="🥣粥品">🥣粥品</option><option value="🥣湯品">🥣湯品</option></select>
 
     <label class="adm-label">菜名</label>
     <input class="adm-input" type="text" id="ef-name" placeholder="例：蒜泥白肉">
@@ -821,37 +3030,51 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 // ╔══════════════════════════════════════════════════════════════════════╗
 // ║  🍱 香品小食堂 點餐系統                                             ║
 // ║                                                                      ║
-// ║  ★ 進入後台：點右下角 ⚙️ 按鈕（或連點 Logo 3 下）               ║
-// ║  ★ 改完後點【💾 存檔】確認無誤，再點【⬇ 下載 HTML】上傳 GitHub ║
-// ║  ★ 不要手動改這裡，用後台改完再存檔                               ║
+// ║  ★ 進入後台（營業中）：連按 Logo 3 下                              ║
+// ║  ★ 進入後台（公休中）：點畫面右下角半透明齒輪 ⚙️                 ║
+// ║  ★ 改完後點【💾 存檔】確認無誤，再點【⬇ 下載 HTML】上傳 GitHub  ║
+// ║  ★ 不要手動改這裡，用後台改完再存檔                                ║
 // ║                                                                      ║
 // ╚══════════════════════════════════════════════════════════════════════╝
 
-// ════════════════════════════════════════════════════════════════
-//  🏪【區塊 A】店家設定
-//  ★ 建議用管理後台修改，不要直接改這裡
-//  ─────────────────────────────────────────────────────────────
-//  isOpen            → true = 營業中 / false = 公休（全日強制關閉）
-//  closedRanges      → 指定公休時段（台灣時間 GMT+8，支援跨日）
-//                      格式：{ start:"YYYY-MM-DDTHH:MM", end:"YYYY-MM-DDTHH:MM", note:"說明" }
-//  announcementText  → 頁面頂端黃色公告文字
-//  popupLines        → 開啟時的公告彈窗（[] = 不顯示）
-//  defaultNote       → 備註欄預設提示文字
-//  deliveryHintLine1 → 選外送時的提示說明第一行
-//  deliveryHintLine2 → 選外送時的提示說明第二行（紅色粗體）
-//  ─────────────────────────────────────────────────────────────
-//  waitSmall         → 1–2 項時，最早可選取餐時間（分鐘）
-//  waitMedium        → 3–5 項時，最早可選取餐時間（分鐘）
-//  waitLarge         → 6 項以上時，最早可選取餐時間（分鐘）
-//                      ※ 外帶選單顯示 3 個時段（N、2N、3N 分鐘後）
-//                      ※ 外送固定 +60 分鐘，不受以上設定影響
-//  ─────────────────────────────────────────────────────────────
-//  pickupTimeHint    → 取餐時間下方橘色提示小字
-//  takeoutLabel      → 外帶按鈕文字（例：外帶自取 9折）
-//  deliveryLabel     → 外送按鈕文字（例：外送）
-//  takeoutDiscount   → 外帶折扣（0.9 = 九折 / 0.85 = 八五折 / 1.0 = 不打折）
-//  lineNotifyHeader  → LINE 新訂單通知訊息第一行標題文字
-// ════════════════════════════════════════════════════════════════
+// ╔══════════════════════════════════════════════════════════════════════╗
+// ║  🏪【區塊 A】店家設定                                               ║
+// ║  ★ 建議用管理後台修改，不要直接改這裡                              ║
+// ╠══════════════════════════════════════════════════════════════════════╣
+// ║  isOpen                                                              ║
+// ║    true  → 營業中（正常接單）                                       ║
+// ║    false → 全日公休（客人看到公休畫面，無法點餐）                   ║
+// ║                                                                      ║
+// ║  closedRanges  → 指定公休時段，支援跨日，可設多個                   ║
+// ║    start / end 格式：「YYYY-MM-DDTHH:MM」（台灣時間，不用換算）    ║
+// ║    note        → 公休說明（顯示在公休畫面下方，可留空）             ║
+// ║    範例：5/23 00:00 ～ 5/30 23:59 公休 8 天                        ║
+// ║      { start:"2026-05-23T00:00", end:"2026-05-30T23:59",            ║
+// ║        note:"連假公休 8 日，5/31 見！" }                            ║
+// ║                                                                      ║
+// ║  announcementText → 頁面頂端黃色跑馬燈文字                         ║
+// ║                                                                      ║
+// ║  popupLines  → 進入頁面時的彈窗公告，每行一個字串                   ║
+// ║    空字串 ""  → 空一行；全部刪掉 → 不顯示彈窗                      ║
+// ║                                                                      ║
+// ║  defaultNote → 備註欄的灰色提示文字（客人還沒輸入時顯示）          ║
+// ║                                                                      ║
+// ║  deliveryHintLine1 → 選「外送」時顯示的提示（第一行）               ║
+// ║  deliveryHintLine2 → 選「外送」時顯示的提示（第二行，紅色粗體）     ║
+// ║                                                                      ║
+// ║  waitSmall   → 購物車 1–2 項時，最早可選取餐時間（分鐘）           ║
+// ║  waitMedium  → 購物車 3–5 項時，最早可選取餐時間（分鐘）           ║
+// ║  waitLarge   → 購物車 6 項以上，最早可選取餐時間（分鐘）           ║
+// ║    ※ 外帶下拉顯示 3 個時段（N、2N、3N 分鐘後）+ 自訂時間          ║
+// ║    ※ 外送固定 +60 分鐘，不受以上設定影響                           ║
+// ║                                                                      ║
+// ║  pickupTimeHint  → 取餐時間選單下方橘色小字提示                     ║
+// ║  takeoutLabel    → 外帶按鈕文字（例：外帶自取 9折）                 ║
+// ║  deliveryLabel   → 外送按鈕文字（例：外送）                         ║
+// ║  takeoutDiscount → 外帶折扣                                          ║
+// ║    0.9 = 九折  /  0.85 = 八五折  /  1.0 = 不打折                   ║
+// ║  lineNotifyHeader → LINE 新訂單通知的第一行標題文字                  ║
+// ╚══════════════════════════════════════════════════════════════════════╝
 const STORE_CONFIG = {
   isOpen: true,
   closedRanges: [
@@ -859,6 +3082,11 @@ const STORE_CONFIG = {
     "start": "2026-05-23T00:00",
     "end": "2026-05-30T23:59",
     "note": "老闆出國充充電，5/5 - 5/12 公休８日。我們約好 5/31 再見！🔋"
+  },
+  {
+    "start": "2026-05-07T13:00",
+    "end": "2026-05-07T16:00",
+    "note": "老闆外出補貨中 🙏🙏🙏"
   }
 ],
   announcementText: "📢【LINE限定】自取享９折 ‼️ 如需外送服務請提前告知 🙏",
@@ -873,35 +3101,39 @@ const STORE_CONFIG = {
   defaultNote: "例：口味調整、其他需求...",
   deliveryHintLine1: "🔺訂單滿600元、距離3公里內即可外送（請先洽詢店家）",
   deliveryHintLine2: "*請於下方填入外送地址與聯絡電話",
-  // ── 候餐時間（分鐘）：依購物車品項數自動套用 ──
-  // 修改這三個數字即可調整最早可選取餐時間
-  waitSmall: 15,   // 1–2 項
-  waitMedium: 25,  // 3–5 項
-  waitLarge: 35,   // 6 項以上
-  // ── 文字設定 ──
-  pickupTimeHint: "⏱ 備餐時間僅供參考，如有變動將主動通知 🙏",  // 取餐時間下方提示文字
-  takeoutLabel: "外帶自取 9折",    // 取餐方式按鈕文字（外帶）
-  deliveryLabel: "外送",           // 取餐方式按鈕文字（外送）
-  takeoutDiscount: 0.9,            // 外帶折扣（0.9 = 九折，1.0 = 不打折）
-  lineNotifyHeader: "🍱 香品小食堂｜新訂單通知",  // LINE 訊息標題行
+  // ── 候餐時間（分鐘）：外帶選單顯示 3 個時段（N、2N、3N）──
+  // 外送固定 +60 分鐘，不受以下設定影響
+  waitSmall: 15,    // 1–2 項時最早候餐分鐘
+  waitMedium: 25,   // 3–5 項時最早候餐分鐘
+  waitLarge: 35,    // 6 項以上時最早候餐分鐘
+  // ── 文字與折扣設定 ──
+  pickupTimeHint: "⏱ 備餐時間僅供參考，如有變動將主動通知 🙏",
+  takeoutLabel: "外帶自取 9折",
+  deliveryLabel: "外送",
+  takeoutDiscount: 0.9,   // 0.9=九折 / 0.85=八五折 / 1.0=不打折
+  lineNotifyHeader: "🍱 香品小食堂｜新訂單通知",
 };
 
-// ════════════════════════════════════════════════════════════════
-//  🍽️【區塊 B】菜單資料
-//  ★ 建議用管理後台修改，不要直接改這裡
-//  ─────────────────────────────────────────────────────────────
-//  id        → 唯一編號（不可重複，系統自動產生）
-//  cat       → 分類名稱（須與 ALL_CATS 完全一致）
-//  name      → 菜名
-//  price     → 售價（整數）
-//  emoji     → 圖示（一個 emoji）
-//  popular   → true = 顯示「熱銷」橘框標籤
-//  isNew     → true = 顯示「新品」藍色標籤
-//  isSoldOut → true = 顯示「已售完」，無法點選
-//  isHidden  → true = 前台完全隱藏
-//  extras    → 加購選項：[{label:"加飯", price:20}]（免費填 0）
-//  sauce     → 醬料選項：["醬油芥末", "蒜蓉醬"]（單選）
-// ════════════════════════════════════════════════════════════════
+// ╔══════════════════════════════════════════════════════════════════════╗
+// ║  🍽️【區塊 B】菜單資料                                              ║
+// ║  ★ 建議用管理後台修改，不要直接改這裡                              ║
+// ╠══════════════════════════════════════════════════════════════════════╣
+// ║  每一行 { } 是一個品項，欄位說明：                                  ║
+// ║                                                                      ║
+// ║  id        → 品項唯一編號（不可重複，系統自動產生，勿手動更改）    ║
+// ║  cat       → 分類名稱（必須與 ALL_CATS 裡的名稱完全一樣）           ║
+// ║  name      → 菜名                                                   ║
+// ║  price     → 售價（純數字，不含 $）                                 ║
+// ║  emoji     → 圖示（一個 emoji，例：🍳🥬🟡）                        ║
+// ║  popular   → true = 顯示橘色「熱銷」標籤 + 橘框                    ║
+// ║  isNew     → true = 顯示藍色「新品」標籤                            ║
+// ║  isSoldOut → true = 顯示「已售完」，客人無法加入購物車              ║
+// ║  isHidden  → true = 前台完全不顯示（暫時下架用）                    ║
+// ║  extras    → 勾選式加購選項，免費填 price:0                         ║
+// ║    範例：[{label:"加飯", price:20}, {label:"加辣🌶️", price:0}]     ║
+// ║  sauce     → 單選醬料（客人只能選一種），不需要就填 []              ║
+// ║    範例：["醬油芥末", "蒜蓉醬"]                                     ║
+// ╚══════════════════════════════════════════════════════════════════════╝
 const MENU_DATA = [
   { id:1, cat:"🍚炒飯", name:"香腸炒飯", price:105, emoji:"🍚", popular:false, isSoldOut:false, isNew:false, isHidden:false, extras:[{label:"加飯",price:20},{label:"加辣🌶️",price:0}], sauce:[] },
   { id:2, cat:"🍚炒飯", name:"豬肉炒飯", price:105, emoji:"🍚", popular:false, isSoldOut:false, isNew:false, isHidden:false, extras:[{label:"加飯",price:20},{label:"加辣🌶️",price:0}], sauce:[] },
@@ -988,36 +3220,18 @@ const MENU_DATA = [
   { id:101, cat:"✨新品上市", name:"椒鹽秋刀魚", price:180, emoji:"🟡", popular:false, isSoldOut:false, isNew:true, isHidden:false, extras:[{label:"加辣🌶️",price:0}], sauce:[] },
 ];
 
-// ════════════════════════════════════════════════════════════════
-//  🔑【區塊 C】系統識別碼（LIFF ID / 版本號 / GitHub URL）
-//  ★ 這裡不需要手動改，用後台「存檔」按鈕會自動更新
-// ════════════════════════════════════════════════════════════════
-// 🔗 LINE LIFF ID
+// ╔══════════════════════════════════════════════════════════════════════╗
+// ║  🔑【區塊 C】系統識別碼                                             ║
+// ║  ★ 以下三個值由後台【💾 存檔】自動寫入，不需手動修改              ║
+// ╠══════════════════════════════════════════════════════════════════════╣
+// ║  LIFF_ID        → LINE 登入用識別碼（後台「進階設定」可修改）       ║
+// ║  VER            → 版本號，格式 YYYYMMDD-NN，每次存檔自動遞增        ║
+// ║  GITHUB_RAW_URL → 你的 GitHub Raw 網址，用來偵測是否有新版本        ║
+// ║    取得方法：GitHub repo → 點進 HTML 檔 → 點右上角「Raw」→ 複製網址 ║
+// ║    留空 '' → 關閉自動更新偵測                                        ║
+// ╚══════════════════════════════════════════════════════════════════════╝
 const LIFF_ID = '2009693763-bOg2whDg';
-
-// ════════════════════════════════════════════════════════════════
-//  📅 版本號
-//  ─────────────────────────────────────────────────────────────
-//  存檔時自動更新，不需手動修改。
-//  格式：YYYYMMDD-NN（同一天第幾次存檔）
-// ════════════════════════════════════════════════════════════════
 const VER = '20260507-01';
-
-// ════════════════════════════════════════════════════════════════
-//  🔄 自動更新偵測設定
-//  ─────────────────────────────────────────────────────────────
-//  GITHUB_RAW_URL → 填入你的 GitHub Raw 檔案網址
-//
-//  怎麼取得？
-//  1. 到 GitHub 你的 repo → 點進 HTML 檔案
-//  2. 點右上角「Raw」按鈕
-//  3. 複製網址列的網址，貼到下方引號內
-//
-//  範例網址格式：
-//  https://raw.githubusercontent.com/你的帳號/你的repo名稱/main/香品小食堂_點餐系統.html
-//
-//  留空字串 '' → 關閉自動更新偵測
-// ════════════════════════════════════════════════════════════════
 const GITHUB_RAW_URL = 'https://raw.githubusercontent.com/XiangPinKitchen/pos/refs/heads/main/index.html';
 
 // ════════════════════════════════════════════════════════════════
@@ -1247,18 +3461,6 @@ function openCart(){
   const overlay = document.getElementById('cart-overlay');
   overlay.classList.add('open');
 
-  // ── 捲動提示箭頭 ──
-  const body = document.getElementById('cart-body-scroll');
-  const fade = document.getElementById('cart-scroll-fade');
-  function checkScroll(){
-    const canScrollMore = body.scrollTop + body.clientHeight < body.scrollHeight - 8;
-    fade.style.display = canScrollMore ? 'flex' : 'none';
-  }
-  body.removeEventListener('scroll', body._scrollHandler || null);
-  body._scrollHandler = checkScroll;
-  body.addEventListener('scroll', checkScroll);
-  setTimeout(checkScroll, 50);
-
   // ── 安全的背景點擊關閉（防止滑動誤觸） ──
   // 記錄 pointerdown 的位置，若 pointerup 位移 < 8px 才算「點擊」
   overlay.removeEventListener('pointerdown', overlay._pdHandler || null);
@@ -1299,7 +3501,6 @@ function renderCartItems(){
       return `<div class="cart-item">${qtyCtrl(key,val)}<span class="cart-item-name">${item.emoji} ${item.name}</span><span class="cart-item-price">$${item.price*val}</span></div>`;
     }
   }).join('');
-  setTimeout(()=>{ const b=document.getElementById('cart-body-scroll'); const f=document.getElementById('cart-scroll-fade'); if(b&&f){ const can=b.scrollTop+b.clientHeight<b.scrollHeight-8; f.style.display=can?'flex':'none'; } },80);
 }
 function changeCartQty(key,delta){
   const val=cart[key];
@@ -1633,9 +3834,10 @@ function submitOrder(){
   const ptDisplaySub = getPickupTimeDisplay();
   // 外送用「預計送達時間」，外帶用「預計取餐時間」
   const ptLabel = opts.pickup === 'delivery' ? '⏰ 預計送達時間' : '⏰ 預計取餐時間';
-  const ml=[(STORE_CONFIG.lineNotifyHeader||'🍱 香品小食堂｜新訂單通知'),'─────────────',`💡 訂單編號：${orderId}`,`🕐 訂餐時間：${timeStr}`,`🛍 取餐方式：${pl}`,`${ptLabel}：${ptDisplaySub}`];
-  // 自訂時間（預約訂單）→ 加提醒讓服務人員知道不要馬上備餐
-  if(pickupIsReserve) ml.push('📌 預約訂單，請勿立即備餐');
+  const ml=[(STORE_CONFIG.lineNotifyHeader||'🍱 香品小食堂｜新訂單通知'),'─────────────',
+    // ★ 前綴 = 預約訂單（自訂時間），店主一眼識別，客人不會察覺
+    `💡 訂單編號：${pickupIsReserve ? '★' : ''}${orderId}`,
+    `🕐 訂餐時間：${timeStr}`,`🛍 取餐方式：${pl}`,`${ptLabel}：${ptDisplaySub}`];
   if(da) ml.push(`📍 外送地址：${da}`);
   if(dp) ml.push(`📞 聯絡電話：${dp}`);
   ml.push('─────────────',...il,'',`📦 共 ${items.reduce((s,i)=>s+i.qty,0)} 項`,tl,'─────────────',`🥢 免洗餐具：${cutlery}`,`🧾 收據：${receipt}`);
@@ -1903,13 +4105,15 @@ function admReadStore(){
   STORE_CONFIG.takeoutDiscount   = parseFloat(document.getElementById('f-takeoutDiscount').value) || 0.9;
   STORE_CONFIG.popupLines = [];
   document.querySelectorAll('.adm-popup-line-input').forEach(inp=>STORE_CONFIG.popupLines.push(inp.value));
-  // ── 讀取公休時段 ──
+  // ── 讀取公休時段（日期＋時間分開輸入，拼成 YYYY-MM-DDTHH:MM）──
   STORE_CONFIG.closedRanges = [];
   document.querySelectorAll('.closed-range-row').forEach(row=>{
-    const start = row.querySelector('.cr-start').value.trim();
-    const end   = row.querySelector('.cr-end').value.trim();
-    const note  = row.querySelector('.cr-note').value.trim();
-    if(start && end) STORE_CONFIG.closedRanges.push({start, end, note});
+    const sd = row.querySelector('.cr-start-d')?.value.trim();
+    const st = row.querySelector('.cr-start-t')?.value.trim() || '00:00';
+    const ed = row.querySelector('.cr-end-d')?.value.trim();
+    const et = row.querySelector('.cr-end-t')?.value.trim() || '23:59';
+    const note = row.querySelector('.cr-note')?.value.trim() || '';
+    if(sd && ed) STORE_CONFIG.closedRanges.push({ start:`${sd}T${st}`, end:`${ed}T${et}`, note });
   });
 }
 // ── 新增公休時段 Row（支援跨日、開始/結束時間、備註）──
@@ -1920,17 +4124,16 @@ function admAddClosedDateRow(r, save=true){
   const row  = document.createElement('div');
   row.className = 'closed-range-row';
 
-  // 預設值：今天 00:00 ～ 今天 23:59
+  // 預設值：今天 00:00 ～ 今天 23:59（台灣時間）
   const now = new Date();
-  const twStr = () => {
-    const p = new Intl.DateTimeFormat('zh-TW',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(now);
-    const o={}; p.forEach(({type,value})=>o[type]=value);
-    return `${o.year}-${o.month}-${o.day}`;
-  };
-  const todayStr = twStr();
-  const defStart = (r&&r.start) ? r.start : `${todayStr}T00:00`;
-  const defEnd   = (r&&r.end)   ? r.end   : `${todayStr}T23:59`;
-  const defNote  = (r&&r.note)  ? r.note  : '';
+  const p = new Intl.DateTimeFormat('zh-TW',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(now);
+  const o={}; p.forEach(({type,value})=>o[type]=value);
+  const todayStr = `${o.year}-${o.month}-${o.day}`;
+
+  // 從已有資料拆出日期和時間
+  const [defSD, defST] = (r&&r.start) ? r.start.split('T') : [todayStr, '00:00'];
+  const [defED, defET] = (r&&r.end)   ? r.end.split('T')   : [todayStr, '23:59'];
+  const defNote = (r&&r.note) ? r.note : '';
 
   row.innerHTML = `
     <div class="closed-range-row-title">
@@ -1939,16 +4142,23 @@ function admAddClosedDateRow(r, save=true){
     </div>
     <div class="closed-range-fields">
       <div class="closed-range-label">⏰ 開始時間（台灣時間）</div>
-      <input type="datetime-local" class="adm-input cr-start" value="${esc(defStart)}" style="width:100%">
+      <div class="cr-dt-row">
+        <input type="date" class="cr-start-d" value="${esc(defSD)}">
+        <input type="time" class="cr-start-t" value="${esc(defST)}">
+      </div>
       <div class="closed-range-label" style="margin-top:.25rem">⏰ 結束時間（台灣時間）</div>
-      <input type="datetime-local" class="adm-input cr-end" value="${esc(defEnd)}" style="width:100%">
+      <div class="cr-dt-row">
+        <input type="date" class="cr-end-d" value="${esc(defED)}">
+        <input type="time" class="cr-end-t" value="${esc(defET)}">
+      </div>
       <div class="closed-range-label" style="margin-top:.25rem">📝 備註（選填，例：五一連假）</div>
       <input type="text" class="adm-input cr-note" placeholder="備註說明（顯示於公休遮罩下方）" value="${esc(defNote)}" style="width:100%">
     </div>
-    <div style="font-size:.7rem;color:#aaa;margin-top:.25rem">💡 跨日示例：5/5 22:00 ～ 5/6 10:00 → 開始填 2025-05-05T22:00，結束填 2025-05-06T10:00</div>
+    <div style="font-size:.7rem;color:#aaa;margin-top:.25rem">💡 跨日示例：5/5 22:00 ～ 5/6 10:00 → 日期填 2025-05-05，時間填 22:00</div>
   `;
   wrap.appendChild(row);
 }
+
 function admAddPopupLine(v='', save=true){
   if(save) admReadStore();
   const wrap=document.getElementById('adm-popup-lines-wrap');
@@ -2299,7 +4509,6 @@ function admDownload(){
 
   const allCatsOnly = JSON.stringify(ALL_CATS);
   const popupStr = JSON.stringify(STORE_CONFIG.popupLines, null, 2);
-  // ── 序列化公休時段（新格式）──
   const closedRangesStr = JSON.stringify(STORE_CONFIG.closedRanges||[], null, 2);
 
   // 下載前先把後台、密碼框關掉，讓 DOM 回到純前台點餐狀態
@@ -2372,4 +4581,4 @@ function admDownload(){
 }
 </script>
 
-</div></div><script src="https://static.line-scdn.net/liff/edge/2/non-ios-extensions_2_22_0.js" type="text/javascript"></script></body></html>
+</div></div><script src="https://static.line-scdn.net/liff/edge/2/non-ios-extensions_2_22_0.js" type="text/javascript"></script><script src="https://static.line-scdn.net/liff/edge/2/non-ios-extensions_2_22_0.js" type="text/javascript"></script></body></html>
