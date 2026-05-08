@@ -1209,7 +1209,7 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 <div class="closed-overlay open" id="closed-overlay">
   <div class="closed-icon">🔒</div>
   <div class="closed-title">目前為公休時間</div>
-  <div class="closed-msg">暫不開放點餐，感謝您的光臨。<br>請於營業時段再來訂餐，謝謝！<br><span id="closed-range-hint" style="font-size:.875rem;opacity:.7;margin-top:.5rem;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90vw">公休時段：2026-05-09 00:00 ～ 2026-05-09 23:59</span><span id="closed-range-note" style="font-size:.8125rem;opacity:.65;margin-top:.25rem;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90vw">今日公休 🙇‍♂️ 造成不便請多包涵，祝您有個美好的一天！🌈</span></div>
+  <div class="closed-msg">暫不開放點餐，感謝您的光臨。<br>請於營業時段再來訂餐，謝謝！<br><span id="closed-range-hint" style="font-size:.875rem;opacity:.7;margin-top:.5rem;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90vw">公休時段：2026-05-09 00:00 ～ 2026-05-09 23:59</span><span id="closed-range-note" style="font-size:.8125rem;opacity:.65;margin-top:.25rem;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90vw">5/9 (六) 今日公休，造成不便敬請見諒。期待下次為您服務！☕️✨</span></div>
   <button class="closed-adm-btn" onclick="admOpenPw()" title="">⚙️</button>
 </div>
 
@@ -1430,7 +1430,27 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
         <input type="time" class="cr-end-t" value="23:59">
       </div>
       <div class="closed-range-label" style="margin-top:.25rem">📝 備註（選填，例：五一連假）</div>
-      <input type="text" class="adm-input cr-note" placeholder="備註說明（顯示於公休遮罩下方）" value="今日公休 🙇‍♂️ 造成不便請多包涵，祝您有個美好的一天！🌈" style="width:100%">
+      <input type="text" class="adm-input cr-note" placeholder="備註說明（顯示於公休遮罩下方）" value="5/9 (六) 今日公休，造成不便敬請見諒。期待下次為您服務！☕️✨" style="width:100%">
+    </div>
+    <div style="font-size:.7rem;color:#aaa;margin-top:.25rem">💡 跨日示例：5/5 22:00 ～ 5/6 10:00 → 日期填 2025-05-05，時間填 22:00</div>
+  </div><div class="closed-range-row">
+    <div class="closed-range-row-title">
+      📅 公休時段
+      <button class="adm-del-btn" onclick="this.closest('.closed-range-row').remove()" title="刪除此時段">✕</button>
+    </div>
+    <div class="closed-range-fields">
+      <div class="closed-range-label">⏰ 開始時間（台灣時間）</div>
+      <div class="cr-dt-row">
+        <input type="date" class="cr-start-d" value="2026-05-09">
+        <input type="time" class="cr-start-t" value="00:00">
+      </div>
+      <div class="closed-range-label" style="margin-top:.25rem">⏰ 結束時間（台灣時間）</div>
+      <div class="cr-dt-row">
+        <input type="date" class="cr-end-d" value="2026-05-09">
+        <input type="time" class="cr-end-t" value="23:59">
+      </div>
+      <div class="closed-range-label" style="margin-top:.25rem">📝 備註（選填，例：五一連假）</div>
+      <input type="text" class="adm-input cr-note" placeholder="備註說明（顯示於公休遮罩下方）" value="" style="width:100%">
     </div>
     <div style="font-size:.7rem;color:#aaa;margin-top:.25rem">💡 跨日示例：5/5 22:00 ～ 5/6 10:00 → 日期填 2025-05-05，時間填 22:00</div>
   </div></div>
@@ -3087,6 +3107,11 @@ const STORE_CONFIG = {
     "start": "2026-05-09T00:00",
     "end": "2026-05-09T23:59",
     "note": "5/9 (六) 今日公休，造成不便敬請見諒。期待下次為您服務！☕️✨"
+  },
+  {
+    "start": "2026-05-13T00:00",
+    "end": "2026-05-13T23:59",
+    "note": "5/13 (三) 今日公休，造成不便敬請見諒。期待下次為您服務！☕️✨"
   }
 ],
   announcementText: "📢【LINE限定】自取享９折 ‼️ 如需外送服務請提前告知 🙏",
@@ -4581,7 +4606,7 @@ function admDownload(){
 }
 </script>
 
-</div></div><script src="https://static.line-scdn.net/liff/edge/2/non-ios-extensions_2_22_0.js" type="text/javascript"></script><script src="https://static.line-scdn.net/liff/edge/2/non-ios-extensions_2_22_0.js" type="text/javascript"></script><script src="https://static.line-scdn.net/liff/edge/2/non-ios-extensions_2_22_0.js" type="text/javascript"></script><script src="https://static.line-scdn.net/liff/edge/2/non-ios-extensions_2_22_0.js" type="text/javascript"></script><div id="update-banner" style="position: fixed; bottom: 0px; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; z-index: 9999; background: rgb(26, 36, 85); color: white; padding: 0.875rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; box-shadow: rgba(0, 0, 0, 0.25) 0px -2px 16px; font-family: &quot;Noto Sans TC&quot;, sans-serif; animation: 0.3s ease 0s 1 normal none running slideUpBanner;">
+</div></div><script src="https://static.line-scdn.net/liff/edge/2/non-ios-extensions_2_22_0.js" type="text/javascript"></script><script src="https://static.line-scdn.net/liff/edge/2/non-ios-extensions_2_22_0.js" type="text/javascript"></script><script src="https://static.line-scdn.net/liff/edge/2/non-ios-extensions_2_22_0.js" type="text/javascript"></script><script src="https://static.line-scdn.net/liff/edge/2/non-ios-extensions_2_22_0.js" type="text/javascript"></script><script src="https://static.line-scdn.net/liff/edge/2/non-ios-extensions_2_22_0.js" type="text/javascript"></script><div id="update-banner" style="position: fixed; bottom: 0px; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; z-index: 9999; background: rgb(26, 36, 85); color: white; padding: 0.875rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; box-shadow: rgba(0, 0, 0, 0.25) 0px -2px 16px; font-family: &quot;Noto Sans TC&quot;, sans-serif; animation: 0.3s ease 0s 1 normal none running slideUpBanner;">
     <div style="font-size:.875rem;line-height:1.5;flex:1;min-width:0">
       🔄 <strong>菜單已更新</strong><br>
       <span style="font-size:.75rem;opacity:.8">按「更新」取得最新菜單</span>
