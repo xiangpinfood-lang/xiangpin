@@ -1,4 +1,4 @@
-<html lang="zh-TW" style="color-scheme: light; --liff-base-background-color: #FFFFFF; --liff-base-text-color: #000000; --liff-base-background-rgb-color: 255, 255, 255; --liff-base-text-rgb-color: 0, 0, 0; --liff-light-button-border-color: rgba(0, 0, 0, 0.15); --liff-title-text-color: #111111; --liff-title-background-color: #FFFFFF; --liff-title-button-color: #111111; --liff-icon-color: #111111; --liff-status-bar-color: black; --liff-title-subtext-color: #B7B7B7; --liff-progress-bar-color: #06C755; --liff-progress-background-color: #FFFFFF; --liff-title-button-area-background-color: rgba(255, 255, 255, 0.12); --liff-title-button-area-border-color: rgba(0, 0, 0, 0.15);"><head>
+<html lang="zh-TW"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>香品小食堂 點餐系統</title>
@@ -343,8 +343,7 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 }
 .sum-disc-row.show { display: flex; }
 
-</style>
-<style>@keyframes slideUpBanner{from{transform:translateX(-50%) translateY(100%)}to{transform:translateX(-50%) translateY(0)}}</style></head>
+</style></head>
 <body>
 <!-- ════════════════════════════════════════
      點餐系統主體（客人看到的部分）
@@ -366,847 +365,27 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
       </div>
       <button class="cart-btn" onclick="openCart()">
         🛒 購物車
-        <span class="cart-badge" id="cart-badge" style="display: none;">0</span>
+        <span class="cart-badge" id="cart-badge">0</span>
       </button>
     </div>
     <div class="cat-tabs-wrap">
-      <div class="cat-tabs" id="cat-tabs"><button class="cat-tab active" onclick="selCategory('全部')">全部</button><button class="cat-tab" onclick="selCategory('✨新品上市')">✨新品上市</button><button class="cat-tab" onclick="selCategory('🍳熱炒類')">🍳熱炒類</button><button class="cat-tab" onclick="selCategory('🥬時蔬類')">🥬時蔬類</button><button class="cat-tab" onclick="selCategory('🟡酥炸類')">🟡酥炸類</button><button class="cat-tab" onclick="selCategory('🍚炒飯')">🍚炒飯</button><button class="cat-tab" onclick="selCategory('🍝炒麵')">🍝炒麵</button><button class="cat-tab" onclick="selCategory('🍝炒烏龍麵')">🍝炒烏龍麵</button><button class="cat-tab" onclick="selCategory('🍝烏龍湯麵')">🍝烏龍湯麵</button><button class="cat-tab" onclick="selCategory('🥣粥品')">🥣粥品</button><button class="cat-tab" onclick="selCategory('🥣湯品')">🥣湯品</button></div>
+      <div class="cat-tabs" id="cat-tabs"></div>
     </div>
   </div>
 
   <div class="announce" id="announce-bar">📢【LINE限定】自取享９折 ‼️ 如需外送服務請提前告知 🙏</div>
-  <div id="menu-content"><div class="menu-list"><div class="section-title">✨新品上市</div><div class="menu-item">
-    <div class="item-emoji">🟡</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">椒鹽秋刀魚</span>
-        
-        <span class="new-tag">新品</span>
-        
-      </div>
-      <div class="item-price">$180</div>
-    </div><button class="add-btn" onclick="changeQty(101,1)">+</button></div><div class="section-title">🍳熱炒類</div><div class="menu-item">
-    <div class="item-emoji">🍚</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">白飯</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$20</div>
-    </div><button class="add-btn" onclick="changeQty(100,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍳</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">塔香烘蛋</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$135</div>
-    </div><button class="add-btn" onclick="changeQty(35,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍳</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">青蔥烘蛋</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$135</div>
-    </div><button class="add-btn" onclick="changeQty(36,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍳</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">菜脯蛋</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$135</div>
-    </div><button class="add-btn" onclick="changeQty(37,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍳</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">蚵仔煎蛋</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$160</div>
-    </div><button class="add-btn" onclick="changeQty(38,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍳</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">番茄炒蛋</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$180</div>
-    </div><button class="add-btn" onclick="changeQty(39,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍳</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">麻婆豆腐🌶️</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$180</div>
-    </div><button class="add-btn" onclick="changeQty(40,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍳</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">豆豉鮮蚵</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$180</div>
-    </div><button class="add-btn" onclick="changeQty(41,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍳</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">豆豉排骨</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$195</div>
-    </div><button class="add-btn" onclick="changeQty(42,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍳</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">蠔油雞丁</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$180</div>
-    </div><button class="add-btn" onclick="changeQty(43,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍳</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">宮保雞丁🌶️</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$180</div>
-    </div><button class="add-btn" onclick="changeQty(44,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍳</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">宮保中卷🌶️</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$180</div>
-    </div><button class="add-btn" onclick="changeQty(45,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍳</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">熱炒豬肉</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$180</div>
-    </div><button class="add-btn" onclick="changeQty(46,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍳</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">熱炒牛肉</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$190</div>
-    </div><button class="add-btn" onclick="changeQty(47,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍳</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">熱炒羊肉</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$190</div>
-    </div><button class="add-btn" onclick="changeQty(48,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍳</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">蒜泥五花肉</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$185</div>
-    </div><button class="add-btn" onclick="changeQty(49,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍳</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">炒蛤蜊</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$185</div>
-    </div><button class="add-btn" onclick="changeQty(50,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍳</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">炒海瓜子</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$185</div>
-    </div><button class="add-btn" onclick="changeQty(51,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍳</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">滑蛋牛肉</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$190</div>
-    </div><button class="add-btn" onclick="changeQty(52,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍳</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">滑蛋蝦仁</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$190</div>
-    </div><button class="add-btn" onclick="changeQty(53,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍳</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">川燙中卷</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$195</div>
-    </div><button class="add-btn" onclick="changeQty(54,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍳</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">白灼蝦</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$195</div>
-    </div><button class="add-btn" onclick="changeQty(55,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍳</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">糖醋雞丁</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$185</div>
-    </div><button class="add-btn" onclick="changeQty(56,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍳</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">糖醋排骨</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$195</div>
-    </div><button class="add-btn" onclick="changeQty(57,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍳</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">糖醋蝦球</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$195</div>
-    </div><button class="add-btn" onclick="changeQty(58,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍳</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">金沙豆腐</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$190</div>
-    </div><button class="add-btn" onclick="changeQty(59,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍳</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">金沙中卷</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$210</div>
-    </div><button class="add-btn" onclick="changeQty(60,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍳</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">金沙蝦球</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$210</div>
-    </div><button class="add-btn" onclick="changeQty(61,1)">+</button></div><div class="section-title">🥬時蔬類</div><div class="menu-item">
-    <div class="item-emoji">🥬</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">炒地瓜葉</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$110</div>
-    </div><button class="add-btn" onclick="changeQty(63,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🥬</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">炒空心菜</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$110</div>
-    </div><button class="add-btn" onclick="changeQty(64,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🥬</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">炒高麗菜</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$110</div>
-    </div><button class="add-btn" onclick="changeQty(65,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🥬</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">肉絲水蓮</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$150</div>
-    </div><button class="add-btn" onclick="changeQty(66,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🥬</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">地瓜葉皮蛋</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$150</div>
-    </div><button class="add-btn" onclick="changeQty(67,1)">+</button></div><div class="section-title">🟡酥炸類</div><div class="menu-item">
-    <div class="item-emoji">🟡</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">招牌黃金豆腐</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$170</div>
-    </div><button class="add-btn" onclick="changeQty(68,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🟡</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">招牌紅糟鰻</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$190</div>
-    </div><button class="add-btn" onclick="changeQty(69,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🟡</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">鹽酥鮮蚵</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$190</div>
-    </div><button class="add-btn" onclick="changeQty(70,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🟡</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">月亮蝦餅</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$190</div>
-    </div><button class="add-btn" onclick="changeQty(71,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🟡</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">椒鹽排骨</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$190</div>
-    </div><button class="add-btn" onclick="changeQty(72,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🟡</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">鹽酥蝦</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$190</div>
-    </div><button class="add-btn" onclick="changeQty(73,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🟡</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">椒鹽中卷</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$200</div>
-    </div><button class="add-btn" onclick="changeQty(74,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🟡</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">鳳梨蝦球</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$200</div>
-    </div><button class="add-btn" onclick="changeQty(75,1)">+</button></div><div class="section-title">🍚炒飯</div><div class="menu-item">
-    <div class="item-emoji">🍚</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">香腸炒飯</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$105</div>
-    </div><button class="add-btn" onclick="changeQty(1,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍚</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">豬肉炒飯</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$105</div>
-    </div><button class="add-btn" onclick="changeQty(2,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍚</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">牛肉炒飯</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$110</div>
-    </div><button class="add-btn" onclick="changeQty(3,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍚</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">羊肉炒飯</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$110</div>
-    </div><button class="add-btn" onclick="changeQty(4,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍚</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">蝦仁炒飯</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$115</div>
-    </div><button class="add-btn" onclick="changeQty(5,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍚</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">鮭魚炒飯</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$160</div>
-    </div><button class="add-btn" onclick="changeQty(6,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍚</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">咖哩豬肉炒飯</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$115</div>
-    </div><button class="add-btn" onclick="changeQty(7,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍚</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">咖哩牛肉炒飯</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$120</div>
-    </div><button class="add-btn" onclick="changeQty(8,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍚</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">咖哩羊肉炒飯</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$120</div>
-    </div><button class="add-btn" onclick="changeQty(9,1)">+</button></div><div class="section-title">🍝炒麵</div><div class="menu-item">
-    <div class="item-emoji">🍝</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">豬肉炒麵</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$105</div>
-    </div><button class="add-btn" onclick="changeQty(10,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍝</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">牛肉炒麵</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$110</div>
-    </div><button class="add-btn" onclick="changeQty(11,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍝</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">羊肉炒麵</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$110</div>
-    </div><button class="add-btn" onclick="changeQty(12,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍝</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">海鮮炒麵</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$125</div>
-    </div><button class="add-btn" onclick="changeQty(13,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍝</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">咖哩豬肉炒麵</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$115</div>
-    </div><button class="add-btn" onclick="changeQty(14,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍝</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">咖哩牛肉炒麵</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$120</div>
-    </div><button class="add-btn" onclick="changeQty(15,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍝</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">咖哩羊肉炒麵</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$120</div>
-    </div><button class="add-btn" onclick="changeQty(16,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍝</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">咖哩海鮮炒麵</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$135</div>
-    </div><button class="add-btn" onclick="changeQty(17,1)">+</button></div><div class="section-title">🍝炒烏龍麵</div><div class="menu-item">
-    <div class="item-emoji">🍝</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">豬肉炒烏龍麵</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$105</div>
-    </div><button class="add-btn" onclick="changeQty(18,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍝</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">牛肉炒烏龍麵</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$110</div>
-    </div><button class="add-btn" onclick="changeQty(19,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍝</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">羊肉炒烏龍麵</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$110</div>
-    </div><button class="add-btn" onclick="changeQty(20,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍝</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">海鮮炒烏龍麵</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$125</div>
-    </div><button class="add-btn" onclick="changeQty(21,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍝</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">咖哩豬肉炒烏龍麵</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$115</div>
-    </div><button class="add-btn" onclick="changeQty(22,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍝</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">咖哩牛肉炒烏龍麵</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$120</div>
-    </div><button class="add-btn" onclick="changeQty(23,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍝</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">咖哩羊肉炒烏龍麵</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$120</div>
-    </div><button class="add-btn" onclick="changeQty(24,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍝</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">咖哩海鮮炒烏龍麵</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$135</div>
-    </div><button class="add-btn" onclick="changeQty(25,1)">+</button></div><div class="section-title">🍝烏龍湯麵</div><div class="menu-item">
-    <div class="item-emoji">🍜</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">沙茶豬肉烏龍湯麵</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$110</div>
-    </div><button class="add-btn" onclick="changeQty(26,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍜</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">沙茶牛肉烏龍湯麵</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$115</div>
-    </div><button class="add-btn" onclick="changeQty(27,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍜</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">沙茶羊肉烏龍湯麵</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$115</div>
-    </div><button class="add-btn" onclick="changeQty(28,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🍜</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">海鮮烏龍湯麵</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$130</div>
-    </div><button class="add-btn" onclick="changeQty(29,1)">+</button></div><div class="section-title">🥣粥品</div><div class="menu-item">
-    <div class="item-emoji">🥣</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">玉米瘦肉粥</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$105</div>
-    </div><button class="add-btn" onclick="changeQty(30,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🥣</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">滑蛋牛肉粥</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$110</div>
-    </div><button class="add-btn" onclick="changeQty(31,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🥣</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">皮蛋瘦肉粥</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$115</div>
-    </div><button class="add-btn" onclick="changeQty(32,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🥣</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">海鮮總匯粥</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$120</div>
-    </div><button class="add-btn" onclick="changeQty(33,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🥣</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">虱目魚肚粥</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$135</div>
-    </div><button class="add-btn" onclick="changeQty(34,1)">+</button></div><div class="section-title">🥣湯品</div><div class="menu-item">
-    <div class="item-emoji">🥣</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">紫菜蛋花湯</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$50</div>
-    </div><button class="add-btn" onclick="changeQty(76,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🥣</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">貢丸湯</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$55</div>
-    </div><button class="add-btn" onclick="changeQty(77,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🥣</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">魚丸湯</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$55</div>
-    </div><button class="add-btn" onclick="changeQty(78,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🥣</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">番茄蛋花湯</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$65</div>
-    </div><button class="add-btn" onclick="changeQty(79,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🥣</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">薑絲蛤蜊湯</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$65</div>
-    </div><button class="add-btn" onclick="changeQty(80,1)">+</button></div><div class="menu-item">
-    <div class="item-emoji">🥣</div>
-    <div class="item-info">
-      <div class="item-name-row">
-        <span class="item-name">薑絲鮮蚵湯</span>
-        
-        
-        
-      </div>
-      <div class="item-price">$70</div>
-    </div><button class="add-btn" onclick="changeQty(81,1)">+</button></div></div></div>
+  <div id="menu-content"></div>
 
   <div class="bottom-bar" id="bottom-bar">
     <div class="bottom-total">已選 <span id="bottom-price">$0</span></div>
-    <button class="bottom-order-btn" onclick="openCart()" disabled="" style="opacity: 0.45; cursor: not-allowed;">查看訂單</button>
+    <button class="bottom-order-btn" onclick="openCart()">查看訂單</button>
   </div>
 
 </div>
 </div>
 
 <!-- 公休遮罩 -->
-<div class="closed-overlay open" id="closed-overlay">
+<div class="closed-overlay" id="closed-overlay">
   <div class="closed-icon">🔒</div>
   <div class="closed-title">目前為公休時間</div>
   <div class="closed-msg">暫不開放點餐，感謝您的光臨。<br>請於營業時段再來訂餐，謝謝！<br><span id="closed-range-hint" style="font-size:.875rem;opacity:.7;margin-top:.5rem;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90vw">公休時段：2026-05-09 00:00 ～ 2026-05-09 23:59</span><span id="closed-range-note" style="font-size:.8125rem;opacity:.65;margin-top:.25rem;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90vw">5/9 (六) 今日公休，造成不便敬請見諒。期待下次為您服務！☕️✨</span></div>
@@ -3320,8 +2499,8 @@ function showUpdateBanner(remoteVer){
   ].join(';');
   banner.innerHTML = `
     <div style="font-size:.875rem;line-height:1.5;flex:1;min-width:0">
-      🔄 <strong>菜單已更新</strong><br>
-      <span style="font-size:.75rem;opacity:.8">按「更新」取得最新菜單</span>
+      ✨ <strong>版本已更新</strong><br>
+      <span style="font-size:.75rem;opacity:.8">按「立即更新」取得最新版本 🚀</span>
     </div>
     <button onclick="doUpdate('${remoteVer}')" style="
       flex-shrink:0;background:#e8a020;color:white;border:none;border-radius:.5rem;
@@ -4537,10 +3716,12 @@ function admDownload(){
   const closedRangesStr = JSON.stringify(STORE_CONFIG.closedRanges||[], null, 2);
 
   // 下載前先把後台、密碼框關掉，讓 DOM 回到純前台點餐狀態
-  const admEl  = document.getElementById('adm-overlay');
-  const pwEl   = document.getElementById('adm-pw-overlay');
+  const admEl    = document.getElementById('adm-overlay');
+  const pwEl     = document.getElementById('adm-pw-overlay');
+  const bannerEl = document.getElementById('update-banner'); // ← 更新提示條也要移除
   admEl.classList.remove('open');
   pwEl.classList.remove('open');
+  if(bannerEl) bannerEl.remove(); // ← 移除更新 banner，避免被快照進 HTML
 
   // 抓此時的乾淨 HTML
   const currentHTML = document.documentElement.outerHTML;
@@ -4597,6 +3778,34 @@ function admDownload(){
     `const ALL_CATS = ${allCatsOnly};`
   );
 
+  // ════════════════════════════════════════════════════════════════
+  //  🧹 快照清潔：移除 outerHTML 快照時 LIFF/瀏覽器可能殘留的垃圾
+  //  ────────────────────────────────────────────────────────────
+  //  每次在 LINE App 裡存檔，LIFF SDK 會把一些東西注入到 DOM，
+  //  outerHTML 快照時這些東西就一起被存進去了，以下逐一清掉。
+  // ════════════════════════════════════════════════════════════════
+
+  // ① 移除 LIFF 注入在 <html> 上的 inline style（只保留 lang="zh-TW"）
+  out = out.replace(/<html lang="zh-TW" style="[^"]*">/, '<html lang="zh-TW">');
+
+  // ② 移除 LIFF 自動注入的重複 non-ios-extensions scripts（可能 1~5 個）
+  out = out.replace(/(<script src="https:\/\/static\.line-scdn\.net\/liff\/edge\/2\/non-ios-extensions[^"]*\.js" type="text\/javascript"><\/script>)+/g, '');
+
+  // ③ 清空 cat-tabs 靜態快照（JS renderTabs() 開頁就重寫，不需靜態內容）
+  out = out.replace(/(<div class="cat-tabs" id="cat-tabs">)[\s\S]*?(<\/div>)/, '$1$2');
+
+  // ④ 清空 menu-content 靜態快照（JS renderMenu() 開頁就重寫，不需靜態內容）
+  out = out.replace(/(<div id="menu-content">)[\s\S]*?(<\/div>)\s*\n\s*(<div class="bottom-bar")/, '$1$2\n\n  $3');
+
+  // ⑤ 移除 bottom-order-btn 快照殘留的 disabled 和 inline style
+  out = out.replace(/<button class="bottom-order-btn"[^>]*>查看訂單<\/button>/, '<button class="bottom-order-btn" onclick="openCart()">查看訂單</button>');
+
+  // ⑥ 移除 closed-overlay 快照殘留的 open class（JS checkClosedStatus() 控制）
+  out = out.replace(/<div class="closed-overlay open" id="closed-overlay">/, '<div class="closed-overlay" id="closed-overlay">');
+
+  // ⑦ 移除 cart-badge inline style（JS updateBadge() 控制，不需 inline）
+  out = out.replace(/<span class="cart-badge" id="cart-badge" style="[^"]*">/, '<span class="cart-badge" id="cart-badge">');
+
   const blob = new Blob([out], {type:'text/html;charset=utf-8'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -4606,19 +3815,4 @@ function admDownload(){
 }
 </script>
 
-</div></div><script src="https://static.line-scdn.net/liff/edge/2/non-ios-extensions_2_22_0.js" type="text/javascript"></script><script src="https://static.line-scdn.net/liff/edge/2/non-ios-extensions_2_22_0.js" type="text/javascript"></script><script src="https://static.line-scdn.net/liff/edge/2/non-ios-extensions_2_22_0.js" type="text/javascript"></script><script src="https://static.line-scdn.net/liff/edge/2/non-ios-extensions_2_22_0.js" type="text/javascript"></script><script src="https://static.line-scdn.net/liff/edge/2/non-ios-extensions_2_22_0.js" type="text/javascript"></script><div id="update-banner" style="position: fixed; bottom: 0px; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; z-index: 9999; background: rgb(26, 36, 85); color: white; padding: 0.875rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; box-shadow: rgba(0, 0, 0, 0.25) 0px -2px 16px; font-family: &quot;Noto Sans TC&quot;, sans-serif; animation: 0.3s ease 0s 1 normal none running slideUpBanner;">
-    <div style="font-size:.875rem;line-height:1.5;flex:1;min-width:0">
-      🔄 <strong>菜單已更新</strong><br>
-      <span style="font-size:.75rem;opacity:.8">按「更新」取得最新菜單</span>
-    </div>
-    <button onclick="doUpdate('20260507-01')" style="
-      flex-shrink:0;background:#e8a020;color:white;border:none;border-radius:.5rem;
-      padding:.5rem .875rem;font-size:.875rem;font-weight:700;cursor:pointer;
-      font-family:'Noto Sans TC',sans-serif;white-space:nowrap;min-height:2.5rem
-    ">立即更新</button>
-    <button onclick="dismissUpdate('20260507-01')" style="
-      flex-shrink:0;background:rgba(255,255,255,.15);color:white;border:none;border-radius:.5rem;
-      padding:.5rem .625rem;font-size:.8125rem;cursor:pointer;
-      font-family:'Noto Sans TC',sans-serif;white-space:nowrap;min-height:2.5rem
-    ">稍後</button>
-  </div></body></html>
+</div></div></body></html>
