@@ -388,7 +388,7 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 <div class="closed-overlay" id="closed-overlay">
   <div class="closed-icon">🔒</div>
   <div class="closed-title">目前為公休時間</div>
-  <div class="closed-msg">暫不開放點餐，感謝您的光臨。<br>請於營業時段再來訂餐，謝謝！<br><span id="closed-range-hint" style="font-size:.875rem;opacity:.7;margin-top:.5rem;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90vw">公休時段：2026-05-09 00:00 ～ 2026-05-09 23:59</span><span id="closed-range-note" style="font-size:.8125rem;opacity:.65;margin-top:.25rem;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90vw">5/9 (六) 今日公休，造成不便敬請見諒。期待下次為您服務！☕️✨</span></div>
+  <div class="closed-msg">暫不開放點餐，感謝您的光臨。<br>請於營業時段再來訂餐，謝謝！<br><span id="closed-range-hint" style="font-size:.875rem;opacity:.7;margin-top:.5rem;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90vw"></span><span id="closed-range-note" style="font-size:.8125rem;opacity:.65;margin-top:.25rem;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90vw"></span></div>
   <button class="closed-adm-btn" onclick="admOpenPw()" title="">⚙️</button>
 </div>
 
@@ -498,7 +498,7 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
       <div class="sum-disc-row" id="sum-disc"><span>外帶自取 9折</span><span id="sum-disc-val">-$0</span></div>
       <div class="summary-total"><span>合計</span><span id="sum-total">$0</span></div>
     </div>
-    <button class="checkout-btn" id="checkout-main-btn" onclick="placeOrder()" disabled="" style="opacity: 0.45; cursor: not-allowed;">確認下單</button>
+    <button class="checkout-btn" id="checkout-main-btn" onclick="placeOrder()" style="">確認下單</button>
   </div>
 </div>
 
@@ -601,16 +601,16 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
     <div class="closed-range-fields">
       <div class="closed-range-label">⏰ 開始時間（台灣時間）</div>
       <div class="cr-dt-row">
-        <input type="date" class="cr-start-d" value="2026-05-09">
+        <input type="date" class="cr-start-d" value="2026-05-13">
         <input type="time" class="cr-start-t" value="00:00">
       </div>
       <div class="closed-range-label" style="margin-top:.25rem">⏰ 結束時間（台灣時間）</div>
       <div class="cr-dt-row">
-        <input type="date" class="cr-end-d" value="2026-05-09">
+        <input type="date" class="cr-end-d" value="2026-05-13">
         <input type="time" class="cr-end-t" value="23:59">
       </div>
       <div class="closed-range-label" style="margin-top:.25rem">📝 備註（選填，例：五一連假）</div>
-      <input type="text" class="adm-input cr-note" placeholder="備註說明（顯示於公休遮罩下方）" value="5/9 (六) 今日公休，造成不便敬請見諒。期待下次為您服務！☕️✨" style="width:100%">
+      <input type="text" class="adm-input cr-note" placeholder="備註說明（顯示於公休遮罩下方）" value="5/13 (三) 今日公休，造成不便敬請見諒。期待下次為您服務！☕️✨" style="width:100%">
     </div>
     <div style="font-size:.7rem;color:#aaa;margin-top:.25rem">💡 跨日示例：5/5 22:00 ～ 5/6 10:00 → 日期填 2025-05-05，時間填 22:00</div>
   </div><div class="closed-range-row">
@@ -621,12 +621,12 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
     <div class="closed-range-fields">
       <div class="closed-range-label">⏰ 開始時間（台灣時間）</div>
       <div class="cr-dt-row">
-        <input type="date" class="cr-start-d" value="2026-05-09">
+        <input type="date" class="cr-start-d" value="2026-05-12">
         <input type="time" class="cr-start-t" value="00:00">
       </div>
       <div class="closed-range-label" style="margin-top:.25rem">⏰ 結束時間（台灣時間）</div>
       <div class="cr-dt-row">
-        <input type="date" class="cr-end-d" value="2026-05-09">
+        <input type="date" class="cr-end-d" value="2026-05-12">
         <input type="time" class="cr-end-t" value="23:59">
       </div>
       <div class="closed-range-label" style="margin-top:.25rem">📝 備註（選填，例：五一連假）</div>
@@ -2284,14 +2284,14 @@ const STORE_CONFIG = {
     "note": "老闆出國充充電，5/5 - 5/12 公休８日。我們約好 5/31 再見！🔋"
   },
   {
-    "start": "2026-05-09T00:00",
-    "end": "2026-05-09T23:59",
-    "note": "5/9 (六) 今日公休，造成不便敬請見諒。期待下次為您服務！☕️✨"
-  },
-  {
     "start": "2026-05-13T00:00",
     "end": "2026-05-13T23:59",
     "note": "5/13 (三) 今日公休，造成不便敬請見諒。期待下次為您服務！☕️✨"
+  },
+  {
+    "start": "2026-05-17T00:00",
+    "end": "2026-05-17T23:59",
+    "note": "5/17 (日) 今日公休，造成不便敬請見諒。期待下次為您服務！☕️✨"
   }
 ],
   announcementText: "📢【LINE限定】自取享９折 ‼️ 如需外送服務請提前告知 🙏",
@@ -2436,7 +2436,7 @@ const MENU_DATA = [
 // ║    留空 '' → 關閉自動更新偵測                                        ║
 // ╚══════════════════════════════════════════════════════════════════════╝
 const LIFF_ID = '2009693763-bOg2whDg';
-const VER = '20260509-01';
+const VER = '20260512-01';
 const GITHUB_RAW_URL = 'https://raw.githubusercontent.com/XiangPinKitchen/pos/refs/heads/main/index.html';
 
 // ════════════════════════════════════════════════════════════════
@@ -3800,7 +3800,7 @@ function admDownload(){
   out = out.replace(/<button class="bottom-order-btn"[^>]*>查看訂單<\/button>/, '<button class="bottom-order-btn" onclick="openCart()">查看訂單</button>');
 
   // ⑥ 移除 closed-overlay 快照殘留的 open class（JS checkClosedStatus() 控制）
-  out = out.replace(/<div class="closed-overlay open" id="closed-overlay">/, '<div class="closed-overlay" id="closed-overlay">');
+  out = out.replace(/<div class="closed-overlay" id="closed-overlay">/, '<div class="closed-overlay" id="closed-overlay">');
 
   // ⑦ 移除 cart-badge inline style（JS updateBadge() 控制，不需 inline）
   out = out.replace(/<span class="cart-badge" id="cart-badge" style="[^"]*">/, '<span class="cart-badge" id="cart-badge">');
