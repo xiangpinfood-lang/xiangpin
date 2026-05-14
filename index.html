@@ -175,8 +175,8 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .delivery-field-input{width:100%;border:1.5px solid #e0e0e0;border-radius:.5rem;padding:.5rem .625rem;font-size:1rem;font-family:'Noto Sans TC',sans-serif;color:#333}
 .delivery-field-input:focus{outline:none;border-color:#1a2455}
 .delivery-field-input.error{border-color:#c4390a !important;background:#fff5f5}
-.receipt-tax-row{margin-top:.375rem;display:none}
-.receipt-tax-row.show{display:block}
+.receipt-tax-row{margin-top:.375rem;display:none;background:#fff0f0;border-radius:.625rem;padding:.75rem}
+.receipt-tax-row.show{display:block;background:#fff0f0;border-radius:.625rem;padding:.75rem}
 
 /* ── 取餐時段 / 預約訂單：模式切換按鈕列 ── */
 .order-mode-btns{display:flex;gap:.5rem;margin-bottom:.625rem}
@@ -195,7 +195,7 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 /* 自訂時間展開區 */
 .time-custom-wrap{display:none;flex-direction:column;gap:.25rem;margin-top:.25rem}
 .time-custom-wrap.show{display:flex}
-.time-custom-input{border:1.5px solid #1a2455;border-radius:.5rem;padding:.375rem .625rem;font-size:1rem;font-family:'Noto Sans TC',sans-serif;color:#1a2455;font-weight:700;width:100%;min-height:2.5rem;background:white}
+.time-custom-input{border:1.5px solid #1a2455;border-radius:.5rem;padding:.375rem .625rem;font-size:1rem;font-family:'Noto Sans TC',sans-serif;color:#1a2455;font-weight:700;width:100%;max-width:100%;min-height:2.5rem;background:white;box-sizing:border-box}
 .time-custom-input:focus{outline:none;border-color:#e8a020}
 .time-custom-input.error{border-color:#c4390a !important;background:#fff5f5}
 .time-custom-note{font-size:.75rem;color:#c4390a;line-height:1.5;min-height:1em}
@@ -210,6 +210,10 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .reserve-time-input{width:100%;border:1.5px solid #1a2455;border-radius:.5rem;padding:.375rem .625rem;font-size:1rem;font-family:'Noto Sans TC',sans-serif;color:#1a2455;font-weight:700;min-height:2.5rem;background:white}
 .reserve-time-input:focus{outline:none;border-color:#e8a020}
 .reserve-time-input.error{border-color:#c4390a !important;background:#fff5f5}
+.reserve-date-btns{display:flex;gap:.375rem;flex-wrap:wrap;margin-bottom:.5rem}
+.reserve-date-btn{flex:1;min-width:0;padding:.5rem .25rem;border-radius:.5rem;border:1.5px solid #1a2455;background:white;color:#1a2455;font-size:.875rem;font-weight:700;cursor:pointer;font-family:'Noto Sans TC',sans-serif;min-height:2.5rem;transition:all .15s;text-align:center;white-space:nowrap}
+.reserve-date-btn.active{background:#1a2455;color:white}
+.reserve-date-btn.disabled{border-color:#ccc;color:#ccc;background:#f5f5f5;cursor:not-allowed;pointer-events:none}
 .reserve-closed-warn{display:none;font-size:.8125rem;color:#c4390a;font-weight:700;background:#fff0f0;border:1.5px solid #c4390a;border-radius:.5rem;padding:.5rem .625rem;margin-top:.5rem;line-height:1.6}
 .reserve-closed-warn.show{display:block}
 
@@ -452,27 +456,40 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
       <div class="cart-options">
         <div class="opt-title">訂單選項</div>
 
-        <!-- ① 取餐方式（最重要，放最前面） -->
+        <!-- ① 取餐方式 -->
         <div class="opt-row">
           <span class="opt-label">🛍 取餐方式 <span style="color:#c4390a;font-weight:700;font-size:.75rem">*必填</span></span>
         </div>
         <div class="opt-toggle" style="margin-bottom:6px;width:100%">
           <button class="sel" onclick="selPickup('takeout',this)" style="flex:1">外帶自取 9折</button>
-          <button onclick="selPickup('delivery',this)" style="flex:1" class="">外送</button>
+          <button onclick="selPickup('delivery',this)" style="flex:1">外送</button>
         </div>
         <div class="delivery-hint" id="delivery-hint" style="margin-bottom:8px">
           <span id="delivery-hint-line1">🔺訂單滿600元、距離3公里內即可外送（請先洽詢店家）</span><br>
           <span class="delivery-hint-warn" id="delivery-hint-line2">*請於下方填入外送地址與聯絡電話</span>
         </div>
 
-        <!-- ② 取餐時間 / 預約訂單（模式切換） -->
-        <!-- 兩個大按鈕：「今日取餐」或「預約訂單」，點哪個展開對應區塊 -->
+        <!-- ② 外送地址（外送才顯示，緊接取餐方式） -->
+        <div class="delivery-fields" id="delivery-fields">
+          <div class="delivery-field-row">
+            <div class="delivery-field-label">📍 外送地址 <span>*必填</span></div>
+            <input class="delivery-field-input" type="text" id="delivery-address" placeholder="請輸入完整外送地址">
+          </div>
+        </div>
+
+        <!-- ③ 聯絡電話（外帶＆外送皆必填） -->
+        <div class="required-field-wrap" style="margin-top:8px;margin-bottom:8px">
+          <div class="delivery-field-label">📞 聯絡電話 <span>*必填</span></div>
+          <input class="delivery-field-input" type="tel" id="delivery-phone" inputmode="numeric" maxlength="10" pattern="09[0-9]{8}" placeholder="請輸入手機號碼：09 + 8位數字">
+        </div>
+
+        <!-- ④ 取餐時間 / 預約訂單（模式切換） -->
         <div class="order-mode-btns">
           <button class="order-mode-btn active" id="mode-btn-today" onclick="switchOrderMode('today')">⏰ 今日取餐</button>
           <button class="order-mode-btn" id="mode-btn-reserve" onclick="switchOrderMode('reserve')">📅 預約訂單</button>
         </div>
 
-        <!-- 今日取餐：時段按鈕列（JS 動態填入，預設顯示） -->
+        <!-- 今日取餐：時段按鈕列（JS 動態填入） -->
         <div class="time-slots-wrap" id="time-slots-wrap">
           <div class="time-slot-hint" id="time-slot-hint">⏱ 備餐時間僅供參考，如有變動將主動通知 🙏</div>
           <!-- 時段按鈕由 JS renderTimeSlotBtns() 動態產生 -->
@@ -484,41 +501,24 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
           </div>
         </div>
 
-        <!-- 預約訂單：隔日日期 + 取餐時間（預設隱藏） -->
+        <!-- 預約訂單：3日內日期按鈕 + 取餐時間（預設隱藏） -->
         <div class="reserve-wrap" id="reserve-wrap">
-          <div class="reserve-date-row">
-            <span class="reserve-date-label">📆 預約日期</span>
-            <span class="reserve-date-val" id="reserve-date-display">—</span>
-            <span style="font-size:.75rem;color:#888;margin-left:.25rem">（僅限隔日）</span>
-          </div>
-          <div class="reserve-time-label">⏰ 預約取餐時間</div>
-          <input type="time" class="reserve-time-input" id="reserve-time-input" min="00:00" max="23:59" value="12:00" onchange="onReserveTimeChange(this)">
-          <div class="reserve-closed-warn" id="reserve-closed-warn">⚠️ 隔日為公休日，無法預約。請選擇其他日期或直接當日訂餐。</div>
-        </div>
-
-        <!-- ④ 外送地址（外送才顯示） -->
-        <div class="delivery-fields" id="delivery-fields">
-          <div class="delivery-field-row">
-            <div class="delivery-field-label">📍 外送地址 <span>*必填</span></div>
-            <input class="delivery-field-input" type="text" id="delivery-address" placeholder="請輸入完整外送地址">
-          </div>
-        </div>
-
-        <!-- ⑤ 聯絡電話（外帶＆外送皆必填，同款粉紅底提醒） -->
-        <div class="required-field-wrap" style="margin-top:8px">
-          <div class="delivery-field-label">📞 聯絡電話 <span>*必填</span></div>
-          <input class="delivery-field-input" type="tel" id="delivery-phone" inputmode="tel" maxlength="10" pattern="09[0-9]{8}" placeholder="請輸入 10 碼手機（09xxxxxxxx）">
+          <div class="reserve-date-label" style="margin-bottom:.375rem">📆 選擇取餐日期 <span style="font-size:.75rem;color:#888;font-weight:400">（僅受理3日內預約）</span></div>
+          <div class="reserve-date-btns" id="reserve-date-btns"></div>
+          <div class="reserve-time-label">⏰ 預約取餐時間 <span style="font-size:.75rem;color:#888;font-weight:400">（09:00–00:00）</span></div>
+          <input type="time" class="reserve-time-input" id="reserve-time-input" min="09:00" max="23:59" value="12:00" onchange="onReserveTimeChange(this)">
+          <div class="reserve-closed-warn" id="reserve-closed-warn">⚠️ 此日為公休日，無法預約。請選擇其他日期。</div>
         </div>
 
         <div class="opt-section-divider"></div>
 
-        <!-- ⑥ 付款方式 -->
+        <!-- ⑤ 付款方式 -->
         <div class="opt-row">
           <span class="opt-label">💴 付款方式</span>
           <span style="font-size:14px;font-weight:700;color:#1a2455">現金</span>
         </div>
 
-        <!-- ⑦ 免洗餐具 -->
+        <!-- ⑥ 免洗餐具 -->
         <div class="opt-row">
           <span class="opt-label">🥢 免洗餐具</span>
           <div class="opt-toggle">
@@ -527,7 +527,7 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
           </div>
         </div>
 
-        <!-- ⑧ 收據 + 統一編號 -->
+        <!-- ⑦ 免用統一發票收據 -->
         <div class="opt-row">
           <span class="opt-label">🧾 收據</span>
           <div class="opt-toggle">
@@ -540,7 +540,7 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
           <input class="delivery-field-input" type="text" id="receipt-tax-id" inputmode="numeric" maxlength="8" pattern="[0-9]{8}" placeholder="請輸入 8 位數字統一編號">
         </div>
 
-        <!-- ⑨ 備註 -->
+        <!-- ⑧ 備註 -->
         <div class="opt-section-divider"></div>
         <div style="margin-top:4px">
           <div style="font-size:13px;color:#666;margin-bottom:4px">📝 備註（口味調整、其他需求）</div>
@@ -610,6 +610,9 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 
     <!-- ── 店家設定頁 ── -->
     <div class="adm-page active" id="adm-page-store">
+
+      <!-- ▌ 群組一：營業管理 -->
+      <div style="font-size:.8125rem;font-weight:700;color:white;background:#1a2455;border-radius:.5rem;padding:.4rem .75rem;margin-bottom:.5rem;letter-spacing:.5px">▌ 營業管理</div>
 
       <div class="adm-card">
         <div class="adm-card-title">⚡ 營業狀態 <span class="adm-card-sub">（最常修改）</span></div>
@@ -690,10 +693,13 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
       <input type="text" class="adm-input cr-note" placeholder="備註說明（顯示於公休遮罩下方）" value="老闆出國充充電，5/5 - 5/12 公休８日。我們約好 5/31 再見！🔋" style="width:100%">
     </div>
     <div style="font-size:.7rem;color:#aaa;margin-top:.25rem">💡 跨日示例：5/5 22:00 ～ 5/6 10:00 → 日期填 2025-05-05，時間填 22:00</div>
-  </div></div>
+  </div>
         </div>
         <button class="adm-add-row-btn" onclick="admAddClosedDateRow()">＋ 新增公休時段</button>
       </div>
+
+      <!-- ▌ 群組二：前台文字 -->
+      <div style="font-size:.8125rem;font-weight:700;color:white;background:#1a2455;border-radius:.5rem;padding:.4rem .75rem;margin-bottom:.5rem;letter-spacing:.5px">▌ 前台文字</div>
 
       <div class="adm-card">
         <div class="adm-card-title">📢 頂部黃色公告橫幅</div>
@@ -715,6 +721,9 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
         <label class="adm-label">提示文字</label>
         <input class="adm-input" type="text" id="f-defaultNote">
       </div>
+
+      <!-- ▌ 群組三：訂單設定 -->
+      <div style="font-size:.8125rem;font-weight:700;color:white;background:#1a2455;border-radius:.5rem;padding:.4rem .75rem;margin-bottom:.5rem;letter-spacing:.5px">▌ 訂單設定</div>
 
       <div class="adm-card">
         <div class="adm-card-title">⏰ 候餐時間設定</div>
@@ -747,9 +756,6 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
         <div class="adm-card-title">✏️ 文字與折扣設定</div>
         <div class="adm-tip">✏️ 以下文字直接顯示在點餐頁面，改完存檔即生效。</div>
 
-        <label class="adm-label">LINE 訊息標題 <span class="sub">（新訂單通知第一行）</span></label>
-        <input class="adm-input" type="text" id="f-lineNotifyHeader">
-
         <label class="adm-label">取餐時間提示文字 <span class="sub">（取餐時間下方橘色小字）</span></label>
         <input class="adm-input" type="text" id="f-pickupTimeHint">
 
@@ -771,6 +777,71 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
         <label class="adm-label">第二行 <span class="sub">（紅色粗體）</span></label>
         <input class="adm-input" type="text" id="f-deliveryHintLine2">
       </div>
+
+      <div class="adm-card">
+        <div class="adm-card-title">📨 LINE 訊息文字 <span class="adm-card-sub">（送出訂單通知）</span></div>
+        <div class="adm-tip">✏️ 以下為發送到 LINE 的訊息標籤文字，改完存檔即生效。<br>⚠️ 請勿輸入換行，每格只能填一行文字（防呆）。<br>🔒 自動帶入的值（時間、品項等）不開放修改。</div>
+
+        <label class="adm-label">訊息標題 <span class="sub">（第一行，例：🍱 香品小食堂｜新訂單通知）</span></label>
+        <input class="adm-input" type="text" id="f-lineNotifyHeader">
+
+        <div style="height:1px;background:#f0f0f0;margin:.25rem 0 .75rem"></div>
+        <div style="font-size:.75rem;color:#888;margin-bottom:.5rem">📋 欄位標籤</div>
+
+        <label class="adm-label">訂單編號標籤</label>
+        <input class="adm-input" type="text" id="f-lineLabelOrderId">
+
+        <label class="adm-label">訂餐時間標籤</label>
+        <input class="adm-input" type="text" id="f-lineLabelOrderTime">
+
+        <label class="adm-label">取餐方式標籤</label>
+        <input class="adm-input" type="text" id="f-lineLabelPickup">
+
+        <label class="adm-label">今日取餐時間標籤</label>
+        <input class="adm-input" type="text" id="f-lineLabelPickupTime">
+
+        <label class="adm-label">外送送達時間標籤</label>
+        <input class="adm-input" type="text" id="f-lineLabelDeliveryTime">
+
+        <label class="adm-label">預約取餐時間標籤</label>
+        <input class="adm-input" type="text" id="f-lineLabelReserveTime">
+
+        <label class="adm-label">外送地址標籤</label>
+        <input class="adm-input" type="text" id="f-lineLabelAddress">
+
+        <label class="adm-label">聯絡電話標籤</label>
+        <input class="adm-input" type="text" id="f-lineLabelPhone">
+
+        <label class="adm-label">數量標籤 <span class="sub">（例：📦 共）</span></label>
+        <input class="adm-input" type="text" id="f-lineLabelQty">
+
+        <label class="adm-label">數量單位 <span class="sub">（例：項）</span></label>
+        <input class="adm-input" type="text" id="f-lineLabelQtyUnit">
+
+        <label class="adm-label">免洗餐具標籤</label>
+        <input class="adm-input" type="text" id="f-lineLabelCutlery">
+
+        <label class="adm-label">收據標籤</label>
+        <input class="adm-input" type="text" id="f-lineLabelReceipt">
+
+        <label class="adm-label">統一編號標籤</label>
+        <input class="adm-input" type="text" id="f-lineLabelTaxId">
+
+        <label class="adm-label">備註標籤</label>
+        <input class="adm-input" type="text" id="f-lineLabelNote">
+
+        <div style="height:1px;background:#f0f0f0;margin:.25rem 0 .75rem"></div>
+        <div style="font-size:.75rem;color:#888;margin-bottom:.5rem">📝 底部提醒（顯示在訊息最後一行）</div>
+
+        <label class="adm-label">今日自訂取餐時間提醒 <span class="sub">（空白=不顯示）</span></label>
+        <input class="adm-input" type="text" id="f-lineTodayCustomNote" placeholder="留空則不顯示">
+
+        <label class="adm-label">預約訂單底部提醒</label>
+        <input class="adm-input" type="text" id="f-lineReserveNote">
+      </div>
+
+      <!-- ▌ 群組四：系統設定 -->
+      <div style="font-size:.8125rem;font-weight:700;color:white;background:#1a2455;border-radius:.5rem;padding:.4rem .75rem;margin-bottom:.5rem;letter-spacing:.5px">▌ 系統設定</div>
 
       <div class="adm-card">
         <div class="adm-card-title">🔒 後台登入密碼</div>
@@ -2303,9 +2374,27 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 
 // ╔══════════════════════════════════════════════════════════════════════╗
 // ║  🏪【區塊 A】店家設定                                               ║
-// ║  ★ 建議用管理後台修改，不要直接改這裡                              ║
-// ║  ★ 後台入口：營業中連按 Logo 3 下 / 公休中點右下角 ⚙️             ║
-// ║  ★ 改完後記得點【💾 存檔】→【⬇ 下載 HTML】→ 上傳 GitHub          ║
+// ╠══════════════════════════════════════════════════════════════════════╣
+// ║  ⚠️  建議用管理後台修改，不要直接改這裡                            ║
+// ║  📱 後台入口：營業中連按 Logo 3 下 / 公休中點右下角 ⚙️            ║
+// ║  💾 改完後：點【💾 存檔】→ 下載 HTML → 上傳 GitHub                ║
+// ╠══════════════════════════════════════════════════════════════════════╣
+// ║  isOpen          → true=營業中 / false=全日公休                     ║
+// ║  closedRanges    → 指定公休時段（陣列），每筆包含 start/end/note    ║
+// ║  announcementText→ 頂部橫幅公告文字                                 ║
+// ║  popupLines      → 進頁面彈窗文字（陣列，每行一個字串）             ║
+// ║  defaultNote     → 備註欄位的灰色提示文字                           ║
+// ║  deliveryHintLine1/2 → 選「外送」後出現的粉框說明                   ║
+// ║  waitSmall/Medium/Large → 候餐分鐘（依品項數量）                    ║
+// ║  slotInterval    → 今日取餐時段按鈕的間隔分鐘                       ║
+// ║  pickupTimeHint  → 取餐時間下方橘色小字                             ║
+// ║  takeoutLabel    → 外帶按鈕文字                                      ║
+// ║  deliveryLabel   → 外送按鈕文字                                      ║
+// ║  takeoutDiscount → 外帶折扣（0.9=九折 / 1.0=不打折）                ║
+// ║  lineNotifyHeader→ LINE 訊息第一行標題                               ║
+// ║  lineLabelXxx    → LINE 訊息各欄位標籤（後台「LINE訊息文字」可改）  ║
+// ║  lineReserveNote → 預約訂單 LINE 底部提醒文字                        ║
+// ║  lineTodayCustomNote → 今日自訂時間 LINE 底部提醒（空白=不顯示）    ║
 // ╚══════════════════════════════════════════════════════════════════════╝
 const STORE_CONFIG = {
   isOpen: true,
@@ -2350,6 +2439,24 @@ const STORE_CONFIG = {
   deliveryLabel: "外送",
   takeoutDiscount: 0.9,   // 0.9=九折 / 0.85=八五折 / 1.0=不打折
   lineNotifyHeader: "🍱 香品小食堂｜新訂單通知",
+  // ── LINE 訊息各欄位標籤（後台可修改，請勿加換行）──
+  lineLabelOrderId:   "💡 訂單編號：",
+  lineLabelOrderTime: "🕐 訂餐時間：",
+  lineLabelPickup:    "🛍 取餐方式：",
+  lineLabelPickupTime:"⏰ 預計取餐時間：",
+  lineLabelDeliveryTime:"⏰ 預計送達時間：",
+  lineLabelReserveTime:"📅 預約取餐時間：",
+  lineLabelAddress:   "📍 外送地址：",
+  lineLabelPhone:     "📞 聯絡電話：",
+  lineLabelQty:       "📦 共",
+  lineLabelQtyUnit:   "項",
+  lineLabelCutlery:   "🥢 免洗餐具：",
+  lineLabelReceipt:   "🧾 收據：",
+  lineLabelTaxId:     "🏢 統一編號：",
+  lineLabelNote:      "💬 備註：",
+  // ── 今日自訂取餐 / 預約訂單 LINE 底部提醒 ──
+  lineTodayCustomNote:  "",  // 今日自訂時間時的底部提醒（空白=不顯示）
+  lineReserveNote: "※ 此為預約訂單，請勿提前備餐 ⚠️",  // 預約訂單底部提醒
 };
 
 // ╔══════════════════════════════════════════════════════════════════════╗
@@ -2697,7 +2804,7 @@ function openCart(){
   updateSummary();
   // 每次開啟購物車：依目前模式刷新取餐時段或預約日期
   if (isReserveMode) {
-    switchOrderMode('reserve'); // 刷新隔日日期、重檢公休
+    renderReserveDateBtns(); // 刷新日期按鈕、重檢公休
   } else {
     renderTimeSlotBtns();       // 重新算最新時段按鈕
   }
@@ -2797,6 +2904,24 @@ let isReserveMode  = false;   // 快捷別名（等於 orderMode==='reserve'）
 let reserveDate    = '';      // 預約隔日日期 YYYY-MM-DD
 let reserveTime    = '12:00'; // 預約時間 HH:MM
 
+// ── 電話09前綴防呆 ──
+function enforcePhonePrefix(inp) {
+  // 確保開頭永遠是 09
+  if (!inp.value.startsWith('09')) {
+    // 只保留數字，強制補 09 開頭
+    const digits = inp.value.replace(/\D/g, '');
+    if (digits.startsWith('09')) {
+      inp.value = digits.slice(0, 10);
+    } else if (digits.startsWith('9')) {
+      inp.value = ('0' + digits).slice(0, 10);
+    } else {
+      inp.value = ('09' + digits).slice(0, 10);
+    }
+  }
+  // 移除錯誤樣式（改正中）
+  inp.classList.remove('error');
+}
+
 // ── 台灣時間工具 ──
 function getTaiwanNow() {
   const now = new Date();
@@ -2823,14 +2948,31 @@ function getMinWaitMinutes() {
   return STORE_CONFIG.waitLarge || 35;
 }
 
-// ── 檢查隔日是否公休（整日覆蓋 00:00–23:59）──
-function isTomorrowClosed(dateStr) {
+// isTomorrowClosed → 已由 isDateClosed(dateStr) 取代，請直接呼叫 isDateClosed
+
+// ── 檢查某日期（YYYY-MM-DD）是否整日公休 ──
+function isDateClosed(dateStr) {
   if (!STORE_CONFIG.isOpen) return true;
   const s = twTimeToUTCms(dateStr + 'T00:00');
   const e = twTimeToUTCms(dateStr + 'T23:59');
   return (STORE_CONFIG.closedRanges || []).some(r =>
     r.start && r.end && twTimeToUTCms(r.start) <= s && twTimeToUTCms(r.end) >= e
   );
+}
+
+// ── 取今日起指定天數的日期字串陣列（台灣時間）──
+function getNextNDates(n) {
+  const now = getTaiwanNow();
+  const result = [];
+  for (let i = 1; i <= n; i++) {
+    const d = new Date(now.getTime() + i * 24 * 3600000);
+    result.push(
+      d.getFullYear() + '-' +
+      String(d.getMonth()+1).padStart(2,'0') + '-' +
+      String(d.getDate()).padStart(2,'0')
+    );
+  }
+  return result;
 }
 
 // ════ 模式切換（兩個大按鈕呼叫）════
@@ -2856,21 +2998,61 @@ function switchOrderMode(mode) {
     if (reserveWrap) reserveWrap.classList.add('show');
     if (reserveWrap) reserveWrap.style.display = '';
 
-    // 填入隔日日期
-    reserveDate = getTomorrowTWDateStr();
-    const dateEl = document.getElementById('reserve-date-display');
-    if (dateEl) dateEl.textContent = fmtDateChinese(reserveDate);
+    // 產生3日內日期按鈕
+    renderReserveDateBtns();
 
     // 初始化時間欄位
     const timeInp = document.getElementById('reserve-time-input');
     if (timeInp) { timeInp.value = reserveTime; timeInp.classList.remove('error'); }
-
-    // 公休警告
-    const warnEl = document.getElementById('reserve-closed-warn');
-    if (warnEl) warnEl.classList.toggle('show', isTomorrowClosed(reserveDate));
-
-    pickupTime = isTomorrowClosed(reserveDate) ? '' : reserveTime;
   }
+}
+
+// ── 產生預約日期按鈕（今日起3日）──
+function renderReserveDateBtns() {
+  const btnsEl = document.getElementById('reserve-date-btns');
+  const warnEl = document.getElementById('reserve-closed-warn');
+  if (!btnsEl) return;
+
+  const dates = getNextNDates(3);
+
+  // 若目前選的 reserveDate 不在可選日期裡，選第一個非公休日
+  const validDates = dates.filter(d => !isDateClosed(d));
+  if (!reserveDate || !dates.includes(reserveDate)) {
+    reserveDate = validDates.length ? validDates[0] : dates[0];
+  }
+
+  btnsEl.innerHTML = dates.map(dateStr => {
+    const closed = isDateClosed(dateStr);
+    const active = (dateStr === reserveDate && !closed);
+    const parts = dateStr.split('-').map(Number);
+    const label = parts[1] + '/' + String(parts[2]).padStart(2,'0');
+    const weekLabel = ['日','一','二','三','四','五','六'][new Date(parts[0], parts[1]-1, parts[2]).getDay()];
+    const closedTip = closed ? '<br><span style="font-size:.7rem;font-weight:400">公休</span>' : '';
+    return `<button class="reserve-date-btn${active?' active':''}${closed?' disabled':''}" onclick="${closed ? '' : `selectReserveDate('${dateStr}',this)`}" ${closed ? 'disabled' : ''}>${label}(${weekLabel})${closedTip}</button>`;
+  }).join('');
+
+  // 更新公休警告
+  const isClosed = isDateClosed(reserveDate);
+  if (warnEl) warnEl.classList.toggle('show', isClosed);
+  pickupTime = isClosed ? '' : reserveTime;
+}
+
+// ── 選擇預約日期 ──
+function selectReserveDate(dateStr, btn) {
+  reserveDate = dateStr;
+  // 更新按鈕樣式
+  btn.closest('.reserve-date-btns').querySelectorAll('.reserve-date-btn').forEach(b => {
+    b.classList.remove('active');
+  });
+  btn.classList.add('active');
+  // 更新公休警告
+  const warnEl = document.getElementById('reserve-closed-warn');
+  const isClosed = isDateClosed(reserveDate);
+  if (warnEl) warnEl.classList.toggle('show', isClosed);
+  // 更新 pickupTime
+  const timeInp = document.getElementById('reserve-time-input');
+  if (timeInp) timeInp.classList.remove('error');
+  pickupTime = isClosed ? '' : reserveTime;
 }
 
 // ════ 今日取餐：產生時段按鈕 ════
@@ -3002,7 +3184,7 @@ function onReserveTimeChange(inp) {
 
 // 取得顯示用時間字串（LINE 訊息 / 確認單）
 function getPickupTimeDisplay() {
-  if (isReserveMode) return `${fmtDateChinese(reserveDate)} ${reserveTime}`;
+  if (isReserveMode) return `${fmtDateChinese(reserveDate)} ${reserveTime || pickupTime || ''}`;
   return pickupTime || '（未設定）';
 }
 
@@ -3048,15 +3230,25 @@ function placeOrder(){
 
   // ── 取餐時間驗證 ──
   if (isReserveMode) {
-    // 預約模式：確認隔日非公休、時間已填
-    if (isTomorrowClosed(reserveDate)) {
-      alert('⚠️ 隔日為公休日，無法送出預約訂單。\n請切換回「今日取餐」，或稍後再試。');
+    // 預約模式：確認所選日期非公休、時間已填
+    if (!reserveDate) {
+      alert('請選擇預約日期！');
+      return;
+    }
+    if (isDateClosed(reserveDate)) {
+      alert('⚠️ 所選日期為公休日，無法送出預約訂單。\n請選擇其他日期。');
       return;
     }
     const timeInp = document.getElementById('reserve-time-input');
     if (!timeInp || !timeInp.value) {
       timeInp && timeInp.classList.add('error');
       alert('請填入預約取餐時間！');
+      return;
+    }
+    // 限制時間 09:00 ~ 23:59
+    if (timeInp.value < '09:00') {
+      timeInp.classList.add('error');
+      alert('預約取餐時間須在 09:00 之後（營業時間內）。');
       return;
     }
     reserveTime = timeInp.value;
@@ -3143,15 +3335,37 @@ function submitOrder(){
   const il=[]; items.forEach(i=>{ il.push(`${i.emoji} ${i.name} ×${i.qty}　$${i.price*i.qty}`); if(i.notes) il.push(`     └ ${i.notes}`); });
   const ptDisplaySub = getPickupTimeDisplay();
   const ptLabel = isReserveMode ? '📅 預約取餐時間' : (opts.pickup === 'delivery' ? '⏰ 預計送達時間' : '⏰ 預計取餐時間');
-  const ml=[(STORE_CONFIG.lineNotifyHeader||'🍱 香品小食堂｜新訂單通知'),'─────────────',
+  // 取設定標籤（後台可改，有預設值）
+  const SC = STORE_CONFIG;
+  const labelOrderId    = SC.lineLabelOrderId    || '💡 訂單編號：';
+  const labelOrderTime  = SC.lineLabelOrderTime  || '🕐 訂餐時間：';
+  const labelPickup     = SC.lineLabelPickup     || '🛍 取餐方式：';
+  const labelPickupTime = isReserveMode
+    ? (SC.lineLabelReserveTime  || '📅 預約取餐時間：')
+    : (opts.pickup === 'delivery'
+        ? (SC.lineLabelDeliveryTime || '⏰ 預計送達時間：')
+        : (SC.lineLabelPickupTime   || '⏰ 預計取餐時間：'));
+  const labelAddress   = SC.lineLabelAddress  || '📍 外送地址：';
+  const labelPhone     = SC.lineLabelPhone    || '📞 聯絡電話：';
+  const labelQty       = SC.lineLabelQty      || '📦 共';
+  const labelQtyUnit   = SC.lineLabelQtyUnit  || '項';
+  const labelCutlery   = SC.lineLabelCutlery  || '🥢 免洗餐具：';
+  const labelReceipt   = SC.lineLabelReceipt  || '🧾 收據：';
+  const labelTaxId     = SC.lineLabelTaxId    || '🏢 統一編號：';
+  const labelNote      = SC.lineLabelNote     || '💬 備註：';
+
+  const ml=[(SC.lineNotifyHeader||'🍱 香品小食堂｜新訂單通知'),'─────────────',
     // 預約訂單用 ★ 前綴讓店主一眼識別
-    `💡 訂單編號：${isReserveMode ? '★' : ''}${orderId}`,
-    `🕐 訂餐時間：${timeStr}`,`🛍 取餐方式：${pl}`,`${ptLabel}：${ptDisplaySub}`];
-  if(da) ml.push(`📍 外送地址：${da}`);
-  if(dp) ml.push(`📞 聯絡電話：${dp}`);
-  ml.push('─────────────',...il,'',`📦 共 ${items.reduce((s,i)=>s+i.qty,0)} 項`,tl,'─────────────',`🥢 免洗餐具：${cutlery}`,`🧾 收據：${receipt}`);
-  if(tid) ml.push(`🏢 統一編號：${tid}`);
-  ml.push(`💬 備註：${note||'無'}`);
+    `${labelOrderId}${isReserveMode ? '★' : ''}${orderId}`,
+    `${labelOrderTime}${timeStr}`,`${labelPickup}${pl}`,`${labelPickupTime}${ptDisplaySub}`];
+  if(da) ml.push(`${labelAddress}${da}`);
+  if(dp) ml.push(`${labelPhone}${dp}`);
+  ml.push('─────────────',...il,'',`${labelQty} ${items.reduce((s,i)=>s+i.qty,0)} ${labelQtyUnit}`,tl,'─────────────',`${labelCutlery}${cutlery}`,`${labelReceipt}${receipt}`);
+  if(tid) ml.push(`${labelTaxId}${tid}`);
+  ml.push(`${labelNote}${note||'無'}`);
+  // ── 底部提醒（今日自訂時間 / 預約訂單）──
+  if (isReserveMode && SC.lineReserveNote) ml.push(SC.lineReserveNote);
+  else if (!isReserveMode && pickupIsCustom && SC.lineTodayCustomNote) ml.push(SC.lineTodayCustomNote);
   // 重置所有狀態
   cart={}; pickupTime=''; pickupIsCustom=false;
   orderMode='today'; isReserveMode=false; reserveDate=''; reserveTime='12:00';
@@ -3163,7 +3377,10 @@ function submitOrder(){
   const slotsWrap   = document.getElementById('time-slots-wrap');
   const reserveWrap = document.getElementById('reserve-wrap');
   if (slotsWrap)   slotsWrap.style.display   = '';
-  if (reserveWrap) reserveWrap.style.display  = 'none';
+  if (reserveWrap) { reserveWrap.style.display = 'none'; reserveWrap.classList.remove('show'); }
+  // 清除電話前綴（重置後補回09）
+  const phoneEl = document.getElementById('delivery-phone');
+  if (phoneEl) phoneEl.value = '09';
   updateBadge(); updateBottomBar(); closeCart();
   ['order-note','delivery-address','delivery-phone','receipt-tax-id'].forEach(id=>{ document.getElementById(id).value=''; });
   if(!liff.isInClient()){ alert('請於 LINE App 內開啟'); return; }
@@ -3455,11 +3672,29 @@ function admInitStore(){
   document.getElementById('f-wait-lg').value  = STORE_CONFIG.waitLarge  || 35;
   document.getElementById('f-slot-interval').value = STORE_CONFIG.slotInterval || 15;
   // ── 文字與折扣設定 ──
-  document.getElementById('f-lineNotifyHeader').value  = STORE_CONFIG.lineNotifyHeader  || '🍱 香品小食堂｜新訂單通知';
-  document.getElementById('f-pickupTimeHint').value    = STORE_CONFIG.pickupTimeHint    || '⏱ 備餐時間僅供參考，如有變動將主動通知 🙏';
-  document.getElementById('f-takeoutLabel').value      = STORE_CONFIG.takeoutLabel      || '外帶自取 9折';
-  document.getElementById('f-deliveryLabel').value     = STORE_CONFIG.deliveryLabel     || '外送';
-  document.getElementById('f-takeoutDiscount').value   = STORE_CONFIG.takeoutDiscount   || 0.9;
+  const SC = STORE_CONFIG;
+  document.getElementById('f-lineNotifyHeader').value  = SC.lineNotifyHeader  || '🍱 香品小食堂｜新訂單通知';
+  document.getElementById('f-pickupTimeHint').value    = SC.pickupTimeHint    || '⏱ 備餐時間僅供參考，如有變動將主動通知 🙏';
+  document.getElementById('f-takeoutLabel').value      = SC.takeoutLabel      || '外帶自取 9折';
+  document.getElementById('f-deliveryLabel').value     = SC.deliveryLabel     || '外送';
+  document.getElementById('f-takeoutDiscount').value   = SC.takeoutDiscount   || 0.9;
+  // LINE 訊息文字欄位
+  document.getElementById('f-lineLabelOrderId').value      = SC.lineLabelOrderId      || '💡 訂單編號：';
+  document.getElementById('f-lineLabelOrderTime').value    = SC.lineLabelOrderTime    || '🕐 訂餐時間：';
+  document.getElementById('f-lineLabelPickup').value       = SC.lineLabelPickup       || '🛍 取餐方式：';
+  document.getElementById('f-lineLabelPickupTime').value   = SC.lineLabelPickupTime   || '⏰ 預計取餐時間：';
+  document.getElementById('f-lineLabelDeliveryTime').value = SC.lineLabelDeliveryTime || '⏰ 預計送達時間：';
+  document.getElementById('f-lineLabelReserveTime').value  = SC.lineLabelReserveTime  || '📅 預約取餐時間：';
+  document.getElementById('f-lineLabelAddress').value      = SC.lineLabelAddress      || '📍 外送地址：';
+  document.getElementById('f-lineLabelPhone').value        = SC.lineLabelPhone        || '📞 聯絡電話：';
+  document.getElementById('f-lineLabelQty').value          = SC.lineLabelQty          || '📦 共';
+  document.getElementById('f-lineLabelQtyUnit').value      = SC.lineLabelQtyUnit      || '項';
+  document.getElementById('f-lineLabelCutlery').value      = SC.lineLabelCutlery      || '🥢 免洗餐具：';
+  document.getElementById('f-lineLabelReceipt').value      = SC.lineLabelReceipt      || '🧾 收據：';
+  document.getElementById('f-lineLabelTaxId').value        = SC.lineLabelTaxId        || '🏢 統一編號：';
+  document.getElementById('f-lineLabelNote').value         = SC.lineLabelNote         || '💬 備註：';
+  document.getElementById('f-lineTodayCustomNote').value   = SC.lineTodayCustomNote   || '';
+  document.getElementById('f-lineReserveNote').value       = SC.lineReserveNote       || '※ 此為預約訂單，請勿提前備餐 ⚠️';
   document.getElementById('adm-liff-display').textContent = LIFF_ID;
   document.getElementById('f-githubRawUrl').value = GITHUB_RAW_URL || '';
   const wrap=document.getElementById('adm-popup-lines-wrap'); wrap.innerHTML='';
@@ -3485,6 +3720,23 @@ function admReadStore(){
   STORE_CONFIG.takeoutLabel      = document.getElementById('f-takeoutLabel').value;
   STORE_CONFIG.deliveryLabel     = document.getElementById('f-deliveryLabel').value;
   STORE_CONFIG.takeoutDiscount   = parseFloat(document.getElementById('f-takeoutDiscount').value) || 0.9;
+  // LINE 訊息文字欄位（單行防呆：trim後存入）
+  STORE_CONFIG.lineLabelOrderId      = document.getElementById('f-lineLabelOrderId').value.trim().replace(/\n/g,'');
+  STORE_CONFIG.lineLabelOrderTime    = document.getElementById('f-lineLabelOrderTime').value.trim().replace(/\n/g,'');
+  STORE_CONFIG.lineLabelPickup       = document.getElementById('f-lineLabelPickup').value.trim().replace(/\n/g,'');
+  STORE_CONFIG.lineLabelPickupTime   = document.getElementById('f-lineLabelPickupTime').value.trim().replace(/\n/g,'');
+  STORE_CONFIG.lineLabelDeliveryTime = document.getElementById('f-lineLabelDeliveryTime').value.trim().replace(/\n/g,'');
+  STORE_CONFIG.lineLabelReserveTime  = document.getElementById('f-lineLabelReserveTime').value.trim().replace(/\n/g,'');
+  STORE_CONFIG.lineLabelAddress      = document.getElementById('f-lineLabelAddress').value.trim().replace(/\n/g,'');
+  STORE_CONFIG.lineLabelPhone        = document.getElementById('f-lineLabelPhone').value.trim().replace(/\n/g,'');
+  STORE_CONFIG.lineLabelQty          = document.getElementById('f-lineLabelQty').value.trim().replace(/\n/g,'');
+  STORE_CONFIG.lineLabelQtyUnit      = document.getElementById('f-lineLabelQtyUnit').value.trim().replace(/\n/g,'');
+  STORE_CONFIG.lineLabelCutlery      = document.getElementById('f-lineLabelCutlery').value.trim().replace(/\n/g,'');
+  STORE_CONFIG.lineLabelReceipt      = document.getElementById('f-lineLabelReceipt').value.trim().replace(/\n/g,'');
+  STORE_CONFIG.lineLabelTaxId        = document.getElementById('f-lineLabelTaxId').value.trim().replace(/\n/g,'');
+  STORE_CONFIG.lineLabelNote         = document.getElementById('f-lineLabelNote').value.trim().replace(/\n/g,'');
+  STORE_CONFIG.lineTodayCustomNote   = document.getElementById('f-lineTodayCustomNote').value.trim().replace(/\n/g,'');
+  STORE_CONFIG.lineReserveNote       = document.getElementById('f-lineReserveNote').value.trim().replace(/\n/g,'');
   STORE_CONFIG.popupLines = [];
   document.querySelectorAll('.adm-popup-line-input').forEach(inp=>STORE_CONFIG.popupLines.push(inp.value));
   // ── 讀取公休時段（日期＋時間分開輸入，拼成 YYYY-MM-DDTHH:MM）──
@@ -3912,26 +4164,45 @@ function admDownload(){
   let out = currentHTML;
 
   // ── 重新序列化 STORE_CONFIG（含完整說明注解，存檔後不消失）──
+  const SC2 = STORE_CONFIG;
   const storeConfigStr = `const STORE_CONFIG = {
-  isOpen: ${jb(STORE_CONFIG.isOpen)},
+  isOpen: ${jb(SC2.isOpen)},
   closedRanges: ${closedRangesStr},
-  announcementText: ${js(STORE_CONFIG.announcementText)},
+  announcementText: ${js(SC2.announcementText)},
   popupLines: ${popupStr},
-  defaultNote: ${js(STORE_CONFIG.defaultNote)},
-  deliveryHintLine1: ${js(STORE_CONFIG.deliveryHintLine1)},
-  deliveryHintLine2: ${js(STORE_CONFIG.deliveryHintLine2)},
+  defaultNote: ${js(SC2.defaultNote)},
+  deliveryHintLine1: ${js(SC2.deliveryHintLine1)},
+  deliveryHintLine2: ${js(SC2.deliveryHintLine2)},
   // ── 候餐時間（分鐘）：外帶選單顯示 3 個時段（N、2N、3N）──
   // 外送固定 +60 分鐘，不受以下設定影響
-  waitSmall: ${STORE_CONFIG.waitSmall||15},    // 1–2 項時最早候餐分鐘
-  waitMedium: ${STORE_CONFIG.waitMedium||25},   // 3–5 項時最早候餐分鐘
-  waitLarge: ${STORE_CONFIG.waitLarge||35},    // 6 項以上時最早候餐分鐘
-  slotInterval: ${STORE_CONFIG.slotInterval||15}, // 今日取餐按鈕時間間隔（分鐘）
+  waitSmall: ${SC2.waitSmall||15},    // 1–2 項時最早候餐分鐘
+  waitMedium: ${SC2.waitMedium||25},   // 3–5 項時最早候餐分鐘
+  waitLarge: ${SC2.waitLarge||35},    // 6 項以上時最早候餐分鐘
+  slotInterval: ${SC2.slotInterval||15}, // 今日取餐按鈕時間間隔（分鐘）
   // ── 文字與折扣設定 ──
-  pickupTimeHint: ${js(STORE_CONFIG.pickupTimeHint||'⏱ 備餐時間僅供參考，如有變動將主動通知 🙏')},
-  takeoutLabel: ${js(STORE_CONFIG.takeoutLabel||'外帶自取 9折')},
-  deliveryLabel: ${js(STORE_CONFIG.deliveryLabel||'外送')},
-  takeoutDiscount: ${STORE_CONFIG.takeoutDiscount||0.9},   // 0.9=九折 / 0.85=八五折 / 1.0=不打折
-  lineNotifyHeader: ${js(STORE_CONFIG.lineNotifyHeader||'🍱 香品小食堂｜新訂單通知')},
+  pickupTimeHint: ${js(SC2.pickupTimeHint||'⏱ 備餐時間僅供參考，如有變動將主動通知 🙏')},
+  takeoutLabel: ${js(SC2.takeoutLabel||'外帶自取 9折')},
+  deliveryLabel: ${js(SC2.deliveryLabel||'外送')},
+  takeoutDiscount: ${SC2.takeoutDiscount||0.9},   // 0.9=九折 / 0.85=八五折 / 1.0=不打折
+  lineNotifyHeader: ${js(SC2.lineNotifyHeader||'🍱 香品小食堂｜新訂單通知')},
+  // ── LINE 訊息各欄位標籤（後台可修改，請勿加換行）──
+  lineLabelOrderId:   ${js(SC2.lineLabelOrderId||'💡 訂單編號：')},
+  lineLabelOrderTime: ${js(SC2.lineLabelOrderTime||'🕐 訂餐時間：')},
+  lineLabelPickup:    ${js(SC2.lineLabelPickup||'🛍 取餐方式：')},
+  lineLabelPickupTime:${js(SC2.lineLabelPickupTime||'⏰ 預計取餐時間：')},
+  lineLabelDeliveryTime:${js(SC2.lineLabelDeliveryTime||'⏰ 預計送達時間：')},
+  lineLabelReserveTime:${js(SC2.lineLabelReserveTime||'📅 預約取餐時間：')},
+  lineLabelAddress:   ${js(SC2.lineLabelAddress||'📍 外送地址：')},
+  lineLabelPhone:     ${js(SC2.lineLabelPhone||'📞 聯絡電話：')},
+  lineLabelQty:       ${js(SC2.lineLabelQty||'📦 共')},
+  lineLabelQtyUnit:   ${js(SC2.lineLabelQtyUnit||'項')},
+  lineLabelCutlery:   ${js(SC2.lineLabelCutlery||'🥢 免洗餐具：')},
+  lineLabelReceipt:   ${js(SC2.lineLabelReceipt||'🧾 收據：')},
+  lineLabelTaxId:     ${js(SC2.lineLabelTaxId||'🏢 統一編號：')},
+  lineLabelNote:      ${js(SC2.lineLabelNote||'💬 備註：')},
+  // ── 今日自訂取餐 / 預約訂單 LINE 底部提醒 ──
+  lineTodayCustomNote:  ${js(SC2.lineTodayCustomNote||'')},
+  lineReserveNote: ${js(SC2.lineReserveNote||'※ 此為預約訂單，請勿提前備餐 ⚠️')},
 };`;
   out = out.replace(/const STORE_CONFIG = \{[\s\S]*?\};/, storeConfigStr);
 
@@ -3977,6 +4248,9 @@ function admDownload(){
 
   // ④ 清空 menu-content 靜態快照（JS renderMenu() 開頁就重寫，不需靜態內容）
   out = out.replace(/(<div id="menu-content">)[\s\S]*?(<\/div>)\s*\n\s*(<div class="bottom-bar")/, '$1$2\n\n  $3');
+
+  // ⑦ 清空 reserve-date-btns 快照（JS renderReserveDateBtns() 動態產生，不需靜態內容）
+  out = out.replace(/(<div class="reserve-date-btns" id="reserve-date-btns">)[^<]*(<\/div>)/, '$1$2');
 
   // ⑤ 移除 bottom-order-btn 快照殘留的 disabled 和 inline style
   out = out.replace(/<button class="bottom-order-btn"[^>]*>查看訂單<\/button>/, '<button class="bottom-order-btn" onclick="openCart()">查看訂單</button>');
